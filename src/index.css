@@ -5,9 +5,11 @@
   box-sizing: border-box;
 }
 :root {
+  --c-white: #FFFFFF;
   --c-primary: #5ECE7B;
   --c-text: #1D1F22;
   --c-text-two: #8D8F9A;
+  --c-bg:#EEEEEE;
 }
 body {
 font-family: 'Raleway', sans-serif;
