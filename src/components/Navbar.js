@@ -59,7 +59,7 @@ const Select = styled.ul`
 position:absolute;
 width:114px;
 margin-top:12px;
-top:${(props) => props.active ? '32px' : '-232px'};
+top:${(props) => props.active ? '32px' : '-332px'};
 left:-20px;
 background: var(--c-white);
 filter: drop-shadow(0px 4px 35px rgba(168, 172, 176, 0.19));
@@ -96,9 +96,13 @@ export default class Navbar extends Component {
             activeCategoryTwo: false,
             activeCategoryThree: false,
             activeCurrency: false,
-
+            currency: {
+                'USD': ['$', ' USD'],
+                'Eur': ['€', ' EUR'],
+                'JPY': ['¥', ' JPY'],
+            }
         }
-        this.handleCurrency = this.handleCategory.bind(this);
+        this.handleCategory = this.handleCategory.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
     }
     handleCategory = () => {
@@ -119,9 +123,7 @@ export default class Navbar extends Component {
     handleCurrency = () => {
         this.setState({ activeCurrency: true })
     }
-    componentDidMount() {
-        this.handleCategory()
-    }
+
     render() {
         return (
             <NavBarContainer>
@@ -137,15 +139,15 @@ export default class Navbar extends Component {
 
                 <Div>
                     <SelectContainer>
-                        <Currenc active={this.state.activeCurrency} onClick={this.handleCurrency}>
-                            <Currency>$</Currency>
-                            <Img src={dropdown} width="9px" height='6px' rotate="180deg" />
+                        <Currenc onClick={this.handleCurrency}>
+                            <Currency className='one'>{this.state.currency.USD[0]}</Currency>
+                            <Img src={dropdown} width="9px" height='6px' active={this.state.activeCurrency} />
                         </Currenc>
 
-                        <Select active={this.state.activeCurrency}>
-                            <Option>$ USD</Option>
-                            <Option>€ EUR</Option>
-                            <Option>¥ JPY</Option>
+                        <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
+                            <Option>{this.state.currency.USD}</Option>
+                            <Option>{this.state.currency.Eur}</Option>
+                            <Option>{this.state.currency.JPY}</Option>
                         </Select>
 
                     </SelectContainer>
