@@ -5,7 +5,7 @@ export class SingleProduct extends Component {
         return (
             <div>SingleProduct</div>
         )
-    }
+    } 
 }
 
 export default SingleProduct

@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import shoppingLogo from '../Assets/shopping-logo-cart-green.png'
-import shoppingCart from '../Assets/interface/shopping-cart.png'
-import dropdown from '../Assets/interface/dropdown.png'
+
+
+import shoppingLogo from '../../Assets/shopping-logo-cart-green.png'
+import shoppingCart from '../../Assets/interface/shopping-cart.png'
+import dropdown from '../../Assets/interface/dropdown.png'
 
 const NavBarContainer = styled.nav`
-padding: 28px 101px 32px 117px;
+padding: 28px 0px 32px 0px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 `
-const Category = styled.ul`
+const Category = styled.ul` 
 display:flex;
 justify-content:space-between;
 `
@@ -19,6 +21,7 @@ list-style:none;
 font-weight: 600;
 cursor: pointer;
 font-size: 16px;
+text-transform:uppercase;
 line-height: 120%;
 color: ${(props) => props.active ? 'var(--c-primary)' : 'var(--c-text)'};
 margin-left:32px;
@@ -88,10 +91,14 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 `
+
+
 export default class Navbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            navItems: [],
+            currencyItems: [],
             activeCategory: true,
             activeCategoryTwo: false,
             activeCategoryThree: false,
@@ -100,15 +107,15 @@ export default class Navbar extends Component {
                 'USD': ['$', ' USD'],
                 'Eur': ['€', ' EUR'],
                 'JPY': ['¥', ' JPY'],
-            }
+            },
+
         }
         this.handleCategory = this.handleCategory.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
     }
+
     handleCategory = () => {
-        this.setState({ activeCategory: true })
-        this.setState({ activeCategoryTwo: false })
-        this.setState({ activeCategoryThree: false })
+        this.setState({ activeCategory: true, activeCategoryTwo: false, activeCategoryThree: false })
     }
     handleCategoryTwo = () => {
         this.setState({ activeCategory: false })
@@ -124,15 +131,46 @@ export default class Navbar extends Component {
         this.setState({ activeCurrency: true })
     }
 
+    componentDidMount() {
+        fetch('http://localhost:4000/', {
+            method: 'POST',
+            body: JSON.stringify({
+                query: `{
+            categories {
+                name
+                }
+            currencies {
+                label
+                symbol
+                }
+            }`
+            }),
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data.data)
+                return data
+            })
+            .then((data) => this.setState({ navItems: data.data.categories, currencyItems: data.data.currencies }))
+    }
     render() {
+        const { navItems, currencyItems } = this.state
+
         return (
             <NavBarContainer>
-                <Category>
-                    <List active={this.state.activeCategory} onClick={this.handleCategory}>WOMEN</List>
-                    <List active={this.state.activeCategoryTwo} onClick={this.handleCategoryTwo}>MEN</List>
-                    <List active={this.state.activeCategoryThree} onClick={this.handleCategoryThree}>KIDS</List>
-                </Category>
 
+                <Category>
+                    {navItems.map((item, index) =>
+                        <div key={index}>
+                            <List active={index === 0 && this.state.activeCategory} onClick={this.handleCategory}>{index === 0 && item.name}</List>
+                            <List active={index === 1 && this.state.activeCategoryTwo} onClick={this.handleCategoryTwo}>{index === 1 && item.name}</List>
+                            <List active={index === 2 && this.state.activeCategoryThree} onClick={this.handleCategoryThree}>{index === 2 && item.name}</List>
+                        </div>
+                    )}
+                </Category>
                 <div>
                     <Img src={shoppingLogo} width="31px" height="29px" />
                 </div>
