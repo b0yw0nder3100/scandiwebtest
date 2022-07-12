@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-
+import { Link } from 'react-router-dom';
 
 import Navbar from '../components/organisms/Navbar'
 import ProductD from '../Assets/ProductD.png'
@@ -8,18 +8,11 @@ import ProductD from '../Assets/ProductD.png'
 const ProductsContainer = styled.section`
 padding: 0px 101px 0px 117px;
 `
-
-const ProductsHeader = styled.h1`
-padding:80px 0 119px;
-font-weight: 400;
-font-size: 42px;
-line-height: 160%;
-`
-
 const ProductWrapper = styled.div`
 display: grid;
 grid-gap:40px;
 grid-template-columns: repeat(3, 1fr);
+
 `
 const ProductCard = styled.div`
 padding:16px;
@@ -27,7 +20,9 @@ width:3px;
 `
 
 const ProductCardImage = styled.img`
-width:354px;`
+width:354px;
+height:330px;
+object-fit: contain`
 
 const ProductCardContent = styled.h1`
 width:354px;
@@ -43,35 +38,39 @@ font-size: 18px;
 line-height: 160%;
 color: var(--c-text);
 `
-
-
-
 export default class Products extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            allItems: [],
+            nav: 'all'
+        }
+    }
     render() {
         return (
             <ProductsContainer>
-                <Navbar></Navbar>
+                <Navbar navItems={this.props.navItems} currencyItems={this.props.currencyItems}></Navbar>
 
-                <div>
-                    <ProductsHeader>Category Name</ProductsHeader>
+                <ProductWrapper>
+                    {
+                        this.props.allItems.map((item) =>
+                            <Link to={`#`} onClick={() => window.scrollTo(0, 0)}>
+                                <ProductCard key={item.id}>
+                                    <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
-                    <ProductWrapper>
-                        <ProductCard>
-                            <ProductCardImage src={ProductD}></ProductCardImage>
+                                    <ProductCardContent>
+                                        {item.name}
+                                    </ProductCardContent>
 
-                            <ProductCardContent>
-                                Apollo Running Short
-                            </ProductCardContent>
+                                    <ProductCardContentTwo>
+                                        $ 50.00
+                                    </ProductCardContentTwo>
 
-                            <ProductCardContentTwo>
-                                $ 50.00
-                            </ProductCardContentTwo>
-
-                        </ProductCard>
-
-                    </ProductWrapper>
-                </div>
-
+                                </ProductCard>
+                            </Link>
+                        )
+                    }
+                </ProductWrapper>
             </ProductsContainer>
         )
     }

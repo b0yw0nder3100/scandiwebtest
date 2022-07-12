@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 
-
 import shoppingLogo from '../../Assets/shopping-logo-cart-green.png'
 import shoppingCart from '../../Assets/interface/shopping-cart.png'
 import dropdown from '../../Assets/interface/dropdown.png'
@@ -91,6 +90,13 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 `
+const ProductsHeader = styled.h1`
+padding:80px 0 119px;
+font-weight: 400;
+font-size: 42px;
+line-height: 160%;
+`
+
 
 
 export default class Navbar extends Component {
@@ -131,70 +137,48 @@ export default class Navbar extends Component {
         this.setState({ activeCurrency: true })
     }
 
-    componentDidMount() {
-        fetch('http://localhost:4000/', {
-            method: 'POST',
-            body: JSON.stringify({
-                query: `{
-            categories {
-                name
-                }
-            currencies {
-                label
-                symbol
-                }
-            }`
-            }),
-            headers: {
-                'content-type': 'application/json'
-            }
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data.data)
-                return data
-            })
-            .then((data) => this.setState({ navItems: data.data.categories, currencyItems: data.data.currencies }))
-    }
     render() {
-        const { navItems, currencyItems } = this.state
 
         return (
-            <NavBarContainer>
+            <nav>
+                <NavBarContainer>
 
-                <Category>
-                    {navItems.map((item, index) =>
-                        <div key={index}>
-                            <List active={index === 0 && this.state.activeCategory} onClick={this.handleCategory}>{index === 0 && item.name}</List>
-                            <List active={index === 1 && this.state.activeCategoryTwo} onClick={this.handleCategoryTwo}>{index === 1 && item.name}</List>
-                            <List active={index === 2 && this.state.activeCategoryThree} onClick={this.handleCategoryThree}>{index === 2 && item.name}</List>
-                        </div>
-                    )}
-                </Category>
-                <div>
-                    <Img src={shoppingLogo} width="31px" height="29px" />
-                </div>
-
-                <Div>
-                    <SelectContainer>
-                        <Currenc onClick={this.handleCurrency}>
-                            <Currency className='one'>{this.state.currency.USD[0]}</Currency>
-                            <Img src={dropdown} width="9px" height='6px' active={this.state.activeCurrency} />
-                        </Currenc>
-
-                        <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
-                            <Option>{this.state.currency.USD}</Option>
-                            <Option>{this.state.currency.Eur}</Option>
-                            <Option>{this.state.currency.JPY}</Option>
-                        </Select>
-
-                    </SelectContainer>
-
+                    <Category>
+                        {this.props.navItems.map((item, index) =>
+                            <div key={index}>
+                                <List active={index === 0 && this.state.activeCategory} onClick={this.handleCategory}>{index === 0 && item.name}</List>
+                                <List active={index === 1 && this.state.activeCategoryTwo} onClick={this.handleCategoryTwo}>{index === 1 && item.name}</List>
+                                <List active={index === 2 && this.state.activeCategoryThree} onClick={this.handleCategoryThree}>{index === 2 && item.name}</List>
+                            </div>
+                        )}
+                    </Category>
                     <div>
-                        <Img src={shoppingCart} width='20px' height='20px' alt='shopping cart' />
+                        <Img src={shoppingLogo} width="31px" height="29px" />
                     </div>
-                </Div>
-            </NavBarContainer>
+
+                    <Div>
+                        <SelectContainer>
+                            <Currenc onClick={this.handleCurrency}>
+                                <Currency className='one'>{this.state.currency.USD[0]}</Currency>
+                                <Img src={dropdown} width="9px" height='6px' active={this.state.activeCurrency} />
+                            </Currenc>
+
+                            <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
+                                <Option>{this.state.currency.USD}</Option>
+                                <Option>{this.state.currency.Eur}</Option>
+                                <Option>{this.state.currency.JPY}</Option>
+                            </Select>
+
+                        </SelectContainer>
+
+                        <div>
+                            <Img src={shoppingCart} width='20px' height='20px' alt='shopping cart' />
+                        </div>
+                    </Div>
+                </NavBarContainer>
+
+                <ProductsHeader>Category Name</ProductsHeader>
+            </nav>
         )
     }
 }
