@@ -11,10 +11,6 @@ class App extends Component {
       navItems: [],
       currencyItems: [],
       allItems: [],
-      activeCategory: true,
-      activeCategoryTwo: false,
-      activeCategoryThree: false,
-      activeCurrency: false,
       nav: 'all'
     }
   }
@@ -63,8 +59,12 @@ class App extends Component {
     return (
       <div>
         <Routes>
-          <Route path='/' element={<Products
-            allItems={this.state.allItems} navItems={this.state.navItems} currencyItems={this.state.currencyItems} />} />
+          <Route path='/'
+            element={<Products
+              allItems={this.state.allItems}
+              navItems={this.state.navItems}
+              currencyItems={this.state.currencyItems}
+            />} />
           <Route path='/product/:category/:id' element={<SingleProduct navItems={this.state.navItems} currencyItems={this.state.currencyItems} />} />
         </Routes>
       </div>

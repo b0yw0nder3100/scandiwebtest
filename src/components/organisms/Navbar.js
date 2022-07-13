@@ -23,12 +23,35 @@ font-size: 16px;
 text-transform:uppercase;
 line-height: 120%;
 color: ${(props) => props.active ? 'var(--c-primary)' : 'var(--c-text)'};
-margin-left:32px;
+margin-right:32px;
 transition: border-bottom 0.5s ease-in-out;
 position:relative;
-:nth-child(1) {
-margin-left:0px;
+:hover {
+color:var(--c-primary);
 }
+::after {
+content: "";
+width: 100%;
+top:60px;
+position:absolute;
+height: 1px;
+background: ${(props) => props.active ? 'var(--c-primary)' : 'none'};
+display: block;
+margin: auto;
+-webkit - transition: 0.5s;
+transition: 0.5s ease-in-out;
+}`
+const ListTwo = styled.li`
+list-style:none;
+font-weight: 600;
+cursor: pointer;
+font-size: 16px;
+text-transform:uppercase;
+line-height: 120%;
+color: ${(props) => props.active ? 'var(--c-primary)' : 'var(--c-text)'};
+margin-right:32px;
+transition: border-bottom 0.5s ease-in-out;
+position:relative;
 :hover {
 color:var(--c-primary);
 }
@@ -90,11 +113,13 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 `
+
 const ProductsHeader = styled.h1`
 padding:80px 0 119px;
 font-weight: 400;
 font-size: 42px;
 line-height: 160%;
+ text-transform: capitalize;
 `
 
 
@@ -105,38 +130,31 @@ export default class Navbar extends Component {
         this.state = {
             navItems: [],
             currencyItems: [],
-            activeCategory: true,
-            activeCategoryTwo: false,
-            activeCategoryThree: false,
-            activeCurrency: false,
             currency: {
                 'USD': ['$', ' USD'],
                 'Eur': ['€', ' EUR'],
                 'JPY': ['¥', ' JPY'],
             },
+            isActive: false
 
         }
-        this.handleCategory = this.handleCategory.bind(this);
         this.handleCurrency = this.handleCurrency.bind(this);
-    }
-
-    handleCategory = () => {
-        this.setState({ activeCategory: true, activeCategoryTwo: false, activeCategoryThree: false })
-    }
-    handleCategoryTwo = () => {
-        this.setState({ activeCategory: false })
-        this.setState({ activeCategoryTwo: true })
-        this.setState({ activeCategoryThree: false })
-    }
-    handleCategoryThree = () => {
-        this.setState({ activeCategory: false })
-        this.setState({ activeCategoryTwo: false })
-        this.setState({ activeCategoryThree: true })
+        this.active = this.active.bind(this);
     }
     handleCurrency = () => {
         this.setState({ activeCurrency: true })
     }
 
+    active = index => {
+        if (this.state.isActive === index) {
+            return this.setState({ isActive: index })
+        }
+        this.setState({ isActive: index })
+    }
+
+    componentDidMount() {
+        this.setState({ isActive: 0 })
+    }
     render() {
 
         return (
@@ -146,12 +164,11 @@ export default class Navbar extends Component {
                     <Category>
                         {this.props.navItems.map((item, index) =>
                             <div key={index}>
-                                <List active={index === 0 && this.state.activeCategory} onClick={this.handleCategory}>{index === 0 && item.name}</List>
-                                <List active={index === 1 && this.state.activeCategoryTwo} onClick={this.handleCategoryTwo}>{index === 1 && item.name}</List>
-                                <List active={index === 2 && this.state.activeCategoryThree} onClick={this.handleCategoryThree}>{index === 2 && item.name}</List>
+                                {this.state.isActive === index ? <ListTwo active onClick={() => this.active(index)}>{item.name}</ListTwo> : <List onClick={() => this.active(index)}>{item.name}</List>}
                             </div>
                         )}
                     </Category>
+
                     <div>
                         <Img src={shoppingLogo} width="31px" height="29px" />
                     </div>
@@ -177,7 +194,12 @@ export default class Navbar extends Component {
                     </Div>
                 </NavBarContainer>
 
-                <ProductsHeader>Category Name</ProductsHeader>
+
+                {this.props.navItems.map((item, index) =>
+                    <div key={index}>
+                        {this.state.isActive === index && <ProductsHeader active onClick={() => this.active(index)}>{item.name}</ProductsHeader>}
+                    </div>
+                )}
             </nav>
         )
     }
