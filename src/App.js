@@ -30,14 +30,17 @@ class App extends Component {
       currencyItems: [],
       allItems: [],
       isActive: false,
+      isActiveCurrency: false,
       activeCurrency: false
     }
     this.handleCurrency = this.handleCurrency.bind(this);
     this.active = this.active.bind(this);
+    this.activeCurrency = this.activeCurrency.bind(this);
     this.click = this.click.bind(this);
   }
-  handleCurrency = () => {
+  handleCurrency = (index) => {
     this.setState({ activeCurrency: true })
+    this.activeCurrency(index)
   }
 
   click = (index) => {
@@ -50,6 +53,14 @@ class App extends Component {
     }
     this.setState({ isActive: index })
   }
+
+  activeCurrency = index => {
+    if (this.state.isActiveCurrency === index) {
+      return this.setState({ isActiveCurrency: index })
+    }
+    this.setState({ isActiveCurrency: index })
+  }
+
   componentDidMount() {
     if (window.location.pathname.split('/')[2] === "clothes") {
       this.setState({ isActive: 1 })
@@ -58,6 +69,7 @@ class App extends Component {
     } else
       this.setState({ isActive: 0 })
 
+    this.setState({ isActiveCurrency: 0 })
 
     fetch('http://localhost:4000/', {
       method: 'POST',
@@ -140,19 +152,25 @@ class App extends Component {
             <Div>
               <SelectContainer>
                 {
-                  this.state.currencyItems.map((item, index) =>
+                  this.state.currencyItems.map((item, index) => (
                     <div key={index}>
                       <Currenc onClick={this.handleCurrency}>
-                        <Currency className='one'>{index === 0 && item.symbol}</Currency>
+                        {this.state.isActiveCurrency === index &&
+                          <Currency className='one'>{item.symbol}</Currency>}
                       </Currenc>
-
-
-                      <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
-                        <Option>{item.label} {item.symbol}</Option>
-                        <Option>{item.label} {item.symbol}</Option>
-                      </Select>
                     </div>
-                  )}
+
+                  ))}
+
+                <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
+                  {
+                    this.state.currencyItems.map((item, index) => (
+                      <div key={index}>
+                        <Option onClick={() => this.activeCurrency(index)}>{item.symbol} {item.label}</Option>
+                      </div>
+                    ))}
+                </Select>
+
 
               </SelectContainer>
 
