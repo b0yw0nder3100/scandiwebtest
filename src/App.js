@@ -71,6 +71,7 @@ class App extends Component {
 
     this.setState({ isActiveCurrency: 0 })
 
+
     fetch('http://localhost:4000/', {
       method: 'POST',
       body: JSON.stringify({
@@ -154,9 +155,9 @@ class App extends Component {
                 {
                   this.state.currencyItems.map((item, index) => (
                     <div key={index}>
-                      <Currenc onClick={this.handleCurrency}>
+                      <Currenc onClick={() => this.handleCurrency(index)}>
                         {this.state.isActiveCurrency === index &&
-                          <Currency className='one'>{item.symbol}</Currency>}
+                          <Currency className='one' >{item.symbol}</Currency>}
                       </Currenc>
                     </div>
 
@@ -165,7 +166,7 @@ class App extends Component {
                 <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
                   {
                     this.state.currencyItems.map((item, index) => (
-                      <div key={index}>
+                      <div key={index} >
                         <Option onClick={() => this.activeCurrency(index)}>{item.symbol} {item.label}</Option>
                       </div>
                     ))}
@@ -198,11 +199,12 @@ class App extends Component {
               navItems={this.state.navItems}
               currencyItems={this.state.currencyItems}
               isActive={this.state.isActive}
+              isActiveCurrency={this.state.isActiveCurrency}
             />}>
 
-            <Route path='/:all' element={<Products isActive={this.state.isActive} />} />
-            <Route path='/:tech' element={<Products isActive={this.state.isActive} />} />
-            <Route path='/:clothes' element={<Products isActive={this.state.isActive} />} />
+            <Route path='/:all' element={<Products />} />
+            <Route path='/:tech' element={<Products />} />
+            <Route path='/:clothes' element={<Products />} />
           </Route>
           <Route path='/product/:category/:id' element={<SingleProduct navItems={this.state.navItems} currencyItems={this.state.currencyItems} />} />
         </Routes>

@@ -42,6 +42,7 @@ export default class Products extends Component {
             allItems: [],
             navs: [],
             isActive: this.props.isActive,
+            isActiveCurrency: this.props.isActiveCurrency
         }
     }
     render() {
@@ -53,8 +54,8 @@ export default class Products extends Component {
                     {
                         this.props.isActive === 0 &&
                         Items.products.map((item) =>
-                            <div to={`#`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                <ProductCard key={item.id}>
+                            <Link to={`#`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                <ProductCard>
                                     <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
                                     <ProductCardContent>
@@ -62,11 +63,11 @@ export default class Products extends Component {
                                     </ProductCardContent>
 
                                     <ProductCardContentTwo>
-                                        $ 50.00
+                                        {item.prices[this.props.isActiveCurrency].currency.symbol} {item.prices[this.props.isActiveCurrency].amount}
                                     </ProductCardContentTwo>
 
                                 </ProductCard>
-                            </div>
+                            </Link>
                         )
                     }
                 </ProductWrapper>
@@ -76,8 +77,8 @@ export default class Products extends Component {
                     <ProductWrapper>
                         {
                             Items.products.filter(x => x.category === 'clothes').map((item) =>
-                                <div to={`#`} onClick={() => window.scrollTo(0, 0)}>
-                                    <ProductCard key={item.id}>
+                                <Link to={`#`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                    <ProductCard>
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
                                         <ProductCardContent>
@@ -85,11 +86,11 @@ export default class Products extends Component {
                                         </ProductCardContent>
 
                                         <ProductCardContentTwo>
-                                            $ 50.00
+                                            {item.prices[this.props.isActiveCurrency].currency.symbol} {item.prices[this.props.isActiveCurrency].amount}
                                         </ProductCardContentTwo>
 
                                     </ProductCard>
-                                </div>
+                                </Link>
                             )
                         }
                     </ProductWrapper>
@@ -99,8 +100,8 @@ export default class Products extends Component {
                     <ProductWrapper>
                         {
                             Items.products.filter(x => x.category === 'tech').map((item) =>
-                                <div to={`#`} onClick={() => window.scrollTo(0, 0)}>
-                                    <ProductCard key={item.id}>
+                                <Link to={`#`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                    <ProductCard>
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
                                         <ProductCardContent>
@@ -108,11 +109,11 @@ export default class Products extends Component {
                                         </ProductCardContent>
 
                                         <ProductCardContentTwo>
-                                            $ 50.00
+                                            {item.prices[this.props.isActiveCurrency].currency.symbol} {item.prices[this.props.isActiveCurrency].amount}
                                         </ProductCardContentTwo>
 
                                     </ProductCard>
-                                </div>
+                                </Link>
                             )
                         }
                     </ProductWrapper>
