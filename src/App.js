@@ -30,11 +30,7 @@ class App extends Component {
       currencyItems: [],
       allItems: [],
       isActive: false,
-      currency: {
-        'USD': ['$', ' USD'],
-        'Eur': ['€', ' EUR'],
-        'JPY': ['¥', ' JPY'],
-      },
+      activeCurrency: false
     }
     this.handleCurrency = this.handleCurrency.bind(this);
     this.active = this.active.bind(this);
@@ -143,18 +139,24 @@ class App extends Component {
 
             <Div>
               <SelectContainer>
-                <Currenc onClick={this.handleCurrency}>
-                  <Currency className='one'>{this.state.currency.USD[0]}</Currency>
-                  <Img src={dropdown} width="9px" height='6px' active={this.state.activeCurrency} />
-                </Currenc>
+                {
+                  this.state.currencyItems.map((item, index) =>
+                    <div key={index}>
+                      <Currenc onClick={this.handleCurrency}>
+                        <Currency className='one'>{index === 0 && item.symbol}</Currency>
+                      </Currenc>
 
-                <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
-                  <Option>{this.state.currency.USD}</Option>
-                  <Option>{this.state.currency.Eur}</Option>
-                  <Option>{this.state.currency.JPY}</Option>
-                </Select>
+
+                      <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
+                        <Option>{item.label} {item.symbol}</Option>
+                        <Option>{item.label} {item.symbol}</Option>
+                      </Select>
+                    </div>
+                  )}
 
               </SelectContainer>
+
+              <Img src={dropdown} width="9px" height='6px' marginLeft="-15px" marginRight="30px" active={this.state.activeCurrency} />
 
               <div>
                 <Img src={shoppingCart} width='20px' height='20px' alt='shopping cart' />

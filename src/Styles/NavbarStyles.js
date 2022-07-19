@@ -67,6 +67,8 @@ transition: 0.5s ease-in-out;
 }
 `
 export const Img = styled.img`
+margin-left: ${(props) => props.marginLeft};
+margin-right: ${(props) => props.marginRight};
 width: ${(props) => props.width};
 height: ${(props) => props.height};
 transform: rotate(${(props) => props.active ? '180deg' : '0deg'});
