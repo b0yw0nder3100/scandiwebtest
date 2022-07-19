@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 
-import Navbar from '../components/organisms/Navbar'
-import ProductD from '../Assets/ProductD.png'
-
 const ProductsContainer = styled.section`
 padding: 0px 101px 0px 117px;
 `
@@ -43,18 +40,20 @@ export default class Products extends Component {
         super(props);
         this.state = {
             allItems: [],
-            nav: 'all'
+            navs: [],
+            isActive: this.props.isActive,
         }
     }
     render() {
+        const Items = JSON.parse(localStorage.getItem('dataItems'))
         return (
             <ProductsContainer>
-                <Navbar navItems={this.props.navItems} currencyItems={this.props.currencyItems}></Navbar>
 
                 <ProductWrapper>
                     {
-                        this.props.allItems.map((item) =>
-                            <Link to={`#`} onClick={() => window.scrollTo(0, 0)}>
+                        this.props.isActive === 0 &&
+                        Items.products.map((item) =>
+                            <div to={`#`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                 <ProductCard key={item.id}>
                                     <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
@@ -67,11 +66,58 @@ export default class Products extends Component {
                                     </ProductCardContentTwo>
 
                                 </ProductCard>
-                            </Link>
+                            </div>
                         )
                     }
                 </ProductWrapper>
-            </ProductsContainer>
+
+                {
+                    this.props.isActive === 1 &&
+                    <ProductWrapper>
+                        {
+                            Items.products.filter(x => x.category === 'clothes').map((item) =>
+                                <div to={`#`} onClick={() => window.scrollTo(0, 0)}>
+                                    <ProductCard key={item.id}>
+                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                        <ProductCardContent>
+                                            {item.name}
+                                        </ProductCardContent>
+
+                                        <ProductCardContentTwo>
+                                            $ 50.00
+                                        </ProductCardContentTwo>
+
+                                    </ProductCard>
+                                </div>
+                            )
+                        }
+                    </ProductWrapper>
+                }
+                {
+                    this.props.isActive === 2 &&
+                    <ProductWrapper>
+                        {
+                            Items.products.filter(x => x.category === 'tech').map((item) =>
+                                <div to={`#`} onClick={() => window.scrollTo(0, 0)}>
+                                    <ProductCard key={item.id}>
+                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                        <ProductCardContent>
+                                            {item.name}
+                                        </ProductCardContent>
+
+                                        <ProductCardContentTwo>
+                                            $ 50.00
+                                        </ProductCardContentTwo>
+
+                                    </ProductCard>
+                                </div>
+                            )
+                        }
+                    </ProductWrapper>
+                }
+            </ProductsContainer >
         )
     }
 }
