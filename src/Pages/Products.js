@@ -12,8 +12,10 @@ grid-template-columns: repeat(3, 1fr);
 
 `
 const ProductCard = styled.div`
+position: relative;
 padding:16px;
 width:3px;
+opacity: ${props => props.opacity};
 `
 
 const ProductCardImage = styled.img`
@@ -35,26 +37,53 @@ font-size: 18px;
 line-height: 160%;
 color: var(--c-text);
 `
+const ProductInStock = styled.h1`
+position: absolute;
+left:50%;
+top:50%;
+margin:auto;
+transform: translate(-50%, -50%);
+color: var(--c-text-two);
+font-size: 24px;
+font-weight: 400;
+line-height: 160%;
+`
 export default class Products extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            allItems: [],
-            navs: [],
-            isActive: this.props.isActive,
-            isActiveCurrency: this.props.isActiveCurrency
         }
     }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
+        const { isActive, isActiveCurrency } = this.props
         return (
             <ProductsContainer>
 
                 <ProductWrapper>
                     {
-                        this.props.isActive === 0 &&
+                        isActive === 0 &&
                         Items.products.map((item) =>
-                            <Link to={`#`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                            item.inStock === true ? (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                <ProductCard opacity="0.5">
+
+                                    <ProductInStock>
+                                        OUT OF STOCK
+                                    </ProductInStock>
+
+                                    <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                    <ProductCardContent>
+                                        {item.name}
+                                    </ProductCardContent>
+
+                                    <ProductCardContentTwo>
+                                        {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                    </ProductCardContentTwo>
+
+
+                                </ProductCard>
+                            </Link>) : (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                 <ProductCard>
                                     <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
@@ -63,21 +92,38 @@ export default class Products extends Component {
                                     </ProductCardContent>
 
                                     <ProductCardContentTwo>
-                                        {item.prices[this.props.isActiveCurrency].currency.symbol} {item.prices[this.props.isActiveCurrency].amount}
+                                        {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
                                     </ProductCardContentTwo>
 
                                 </ProductCard>
-                            </Link>
+                            </Link>)
                         )
                     }
                 </ProductWrapper>
 
                 {
-                    this.props.isActive === 1 &&
+                    isActive === 1 &&
                     <ProductWrapper>
                         {
                             Items.products.filter(x => x.category === 'clothes').map((item) =>
-                                <Link to={`#`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                item.inStock === true ? (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                    <ProductCard opacity="0.5">
+
+                                        <ProductInStock>
+                                            OUT OF STOCK
+                                        </ProductInStock>
+                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                        <ProductCardContent>
+                                            {item.name}
+                                        </ProductCardContent>
+
+                                        <ProductCardContentTwo>
+                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                        </ProductCardContentTwo>
+
+                                    </ProductCard>
+                                </Link>) : (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                     <ProductCard>
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
@@ -86,21 +132,39 @@ export default class Products extends Component {
                                         </ProductCardContent>
 
                                         <ProductCardContentTwo>
-                                            {item.prices[this.props.isActiveCurrency].currency.symbol} {item.prices[this.props.isActiveCurrency].amount}
+                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
                                         </ProductCardContentTwo>
 
                                     </ProductCard>
-                                </Link>
+                                </Link>)
                             )
                         }
                     </ProductWrapper>
                 }
                 {
-                    this.props.isActive === 2 &&
+                    isActive === 2 &&
                     <ProductWrapper>
                         {
                             Items.products.filter(x => x.category === 'tech').map((item) =>
-                                <Link to={`#`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                item.inStock === true ? (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                    <ProductCard opacity="0.5">
+
+                                        <ProductInStock>
+                                            OUT OF STOCK
+                                        </ProductInStock>
+
+                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                        <ProductCardContent>
+                                            {item.name}
+                                        </ProductCardContent>
+
+                                        <ProductCardContentTwo>
+                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                        </ProductCardContentTwo>
+
+                                    </ProductCard>
+                                </Link>) : (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                     <ProductCard>
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
@@ -109,11 +173,11 @@ export default class Products extends Component {
                                         </ProductCardContent>
 
                                         <ProductCardContentTwo>
-                                            {item.prices[this.props.isActiveCurrency].currency.symbol} {item.prices[this.props.isActiveCurrency].amount}
+                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
                                         </ProductCardContentTwo>
 
                                     </ProductCard>
-                                </Link>
+                                </Link>)
                             )
                         }
                     </ProductWrapper>

@@ -206,7 +206,7 @@ class App extends Component {
             <Route path='/:tech' element={<Products />} />
             <Route path='/:clothes' element={<Products />} />
           </Route>
-          <Route path='/product/:category/:id' element={<SingleProduct navItems={this.state.navItems} currencyItems={this.state.currencyItems} />} />
+          <Route path='/product/:productname' element={<SingleProduct navItems={this.state.navItems} currencyItems={this.state.currencyItems} />} />
         </Routes>
       </div>
     );
