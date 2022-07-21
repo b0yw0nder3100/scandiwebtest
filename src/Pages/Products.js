@@ -9,7 +9,13 @@ const ProductWrapper = styled.div`
 display: grid;
 grid-gap:40px;
 grid-template-columns: repeat(3, 1fr);
-
+`
+const ProductsHeader = styled.h1`
+padding:80px 0 119px;
+font-weight: 400;
+font-size: 42px;
+line-height: 160%;
+ text-transform: capitalize;
 `
 const ProductCard = styled.div`
 position: relative;
@@ -56,15 +62,21 @@ export default class Products extends Component {
     }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
-        const { isActive, isActiveCurrency } = this.props
+        const { active, navItems, isActive, isActiveCurrency } = this.props
         return (
             <ProductsContainer>
+
+                {navItems.map((item, index) =>
+                    <div key={index}>
+                        {isActive === index && <ProductsHeader active onClick={() => active(index)}>{item.name}</ProductsHeader>}
+                    </div>
+                )}
 
                 <ProductWrapper>
                     {
                         isActive === 0 &&
                         Items.products.map((item) =>
-                            item.inStock === true ? (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                            item.inStock === true ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                 <ProductCard opacity="0.5">
 
                                     <ProductInStock>
@@ -83,7 +95,7 @@ export default class Products extends Component {
 
 
                                 </ProductCard>
-                            </Link>) : (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                            </Link>) : (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                 <ProductCard>
                                     <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
@@ -106,7 +118,7 @@ export default class Products extends Component {
                     <ProductWrapper>
                         {
                             Items.products.filter(x => x.category === 'clothes').map((item) =>
-                                item.inStock === true ? (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                item.inStock === true ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                     <ProductCard opacity="0.5">
 
                                         <ProductInStock>
@@ -123,7 +135,7 @@ export default class Products extends Component {
                                         </ProductCardContentTwo>
 
                                     </ProductCard>
-                                </Link>) : (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                </Link>) : (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                     <ProductCard>
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
@@ -146,7 +158,7 @@ export default class Products extends Component {
                     <ProductWrapper>
                         {
                             Items.products.filter(x => x.category === 'tech').map((item) =>
-                                item.inStock === true ? (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                item.inStock === true ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                     <ProductCard opacity="0.5">
 
                                         <ProductInStock>
@@ -164,7 +176,7 @@ export default class Products extends Component {
                                         </ProductCardContentTwo>
 
                                     </ProductCard>
-                                </Link>) : (<Link to={`/${item.name}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                </Link>) : (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                     <ProductCard>
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 

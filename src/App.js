@@ -184,11 +184,7 @@ class App extends Component {
           </NavBarContainer>
 
 
-          {this.state.navItems.map((item, index) =>
-            <div key={index}>
-              {this.state.isActive === index && <ProductsHeader active onClick={() => this.active(index)}>{item.name}</ProductsHeader>}
-            </div>
-          )}
+
         </Nav>
 
 
@@ -206,7 +202,9 @@ class App extends Component {
             <Route path='/:tech' element={<Products />} />
             <Route path='/:clothes' element={<Products />} />
           </Route>
-          <Route path='/product/:productname' element={<SingleProduct navItems={this.state.navItems} currencyItems={this.state.currencyItems} />} />
+
+
+          <Route path='/:category/:productname' element={<SingleProduct isActiveCurrency={this.state.isActiveCurrency} />} />
         </Routes>
       </div>
     );
