@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Link, useParams } from 'react-router-dom';
+import withRouter from '../components/molecules/withRouter';
 
 const SingleProductContainer = styled.nav`
 padding: 72px 101px 0px 117px;
@@ -54,63 +55,62 @@ export class SingleProduct extends Component {
         this.state = {
         }
     }
+    componentDidMount() {
 
+
+    }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
         const { isActiveCurrency } = this.props
-        const { id } = this.props.params
-        console.log(id);
+        console.log('Props:', this.props)
+        const product = Items.products.find((x) => x.id === this.props.params.productname)
+        console.log(product);
         return (
             <>
-                {
-                    Items.products.map((item, index) =>
-                        index === 2 &&
-                        <SingleProductContainer key={index}>
+                <SingleProductContainer>
 
-                            <Div>
-                                {item.gallery.map((items, index) =>
-                                    <ProductCardImage width='79px' height='80px' src={items}></ProductCardImage>)}
-                            </Div>
+                    <Div>
+                        {product.gallery.map((items, index) =>
+                            <ProductCardImage width='79px' height='80px' src={items}></ProductCardImage>)}
+                    </Div>
 
+                    <div>
+                        <ProductCardImage width='610px' height='511px' src={product.gallery}></ProductCardImage>
+                    </div>
+
+                    <div>
+                        <Text fontSize='30px' lineHeight="27px" fontWeight="700">{product.brand}</Text>
+                        <Text padding="16px 0 43px 0" fontSize='30px' lineHeight="27px" fontWeight="400">{product.name}</Text>
+                        {product.attributes.map((product) =>
                             <div>
-                                <ProductCardImage width='610px' height='511px' src={item.gallery}></ProductCardImage>
+
+                                {product.id === 'Color' ? (<DivTwo>
+                                    <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
+                                    {product.items.map((items) =>
+                                        <Span padding="1px 20px" bg={items.value}></Span>
+                                    )}
+                                </DivTwo>) : (<DivTwo>
+                                    <Text padding="25px 0 25px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
+                                    {product.items.map((items) =>
+                                        <Span padding="13px 20px" width="63px" height="45px" bg={items.value}>{items.value}</Span>
+                                    )}
+                                </DivTwo>)}
                             </div>
+                        )}
 
-                            <div>
-                                <Text fontSize='30px' lineHeight="27px" fontWeight="700">{item.brand}</Text>
-                                <Text padding="16px 0 43px 0" fontSize='30px' lineHeight="27px" fontWeight="400">{item.name}</Text>
-                                {item.attributes.map((item) =>
-                                    <div>
+                        <Text padding="38px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>Price:</Text>
 
-                                        {item.id === 'Color' ? (<DivTwo>
-                                            <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{item.id}:</Text>
-                                            {item.items.map((items) =>
-                                                <Span padding="1px 20px" bg={items.value}></Span>
-                                            )}
-                                        </DivTwo>) : (<DivTwo>
-                                            <Text padding="25px 0 25px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{item.id}:</Text>
-                                            {item.items.map((items) =>
-                                                <Span padding="13px 20px" width="63px" height="45px" bg={items.value}>{items.value}</Span>
-                                            )}
-                                        </DivTwo>)}
-                                    </div>
-                                )}
 
-                                <Text padding="38px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>Price:</Text>
 
-                                <Text padding="0 0 36px 0" fontSize='24px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}</Text>
+                        <AddToCartBtn>Add to Cart</AddToCartBtn>
 
-                                <AddToCartBtn>Add to Cart</AddToCartBtn>
+                        <Text padding="56px 0 0 0" fontSize='16px' lineHeight="160%" fontWeight="400" dangerouslySetInnerHTML={{ __html: product.description }} />
+                    </div>
 
-                                <Text padding="56px 0 0 0" fontSize='16px' lineHeight="160%" fontWeight="400" dangerouslySetInnerHTML={{ __html: item.description }} />
-                            </div>
-
-                        </SingleProductContainer>
-                    )
-                }
+                </SingleProductContainer>
             </>
         )
     }
 }
 
-export default SingleProduct
+export default withRouter(SingleProduct);
