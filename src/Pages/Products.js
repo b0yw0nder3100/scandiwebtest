@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 
+import CircletIcon from '../Assets/interface/Circle-Icon.png'
+
 const ProductsContainer = styled.section`
 padding: 0px 101px 0px 117px;
 `
@@ -25,6 +27,9 @@ opacity: ${props => props.opacity};
     box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
 
 }
+&:hover .onHover {
+    opacity: 1;
+}
 `
 
 const ProductCardImage = styled.img`
@@ -33,6 +38,7 @@ height:330px;
 object-fit: contain`
 
 const ProductCardContent = styled.h1`
+padding:24px 0 0 0;
 width:354px;
 font-weight: 300;
 font-size: 18px;
@@ -58,6 +64,14 @@ color: var(--c-text-two);
 font-size: 24px;
 font-weight: 400;
 line-height: 160%;
+`
+const CartAddOverlay = styled.div`
+position: absolute;
+bottom:72px;
+right:31px;
+`
+const CartAdd = styled.img`
+opacity: 0;
 `
 export default class Products extends Component {
     constructor(props) {
@@ -114,6 +128,10 @@ export default class Products extends Component {
                                         {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
                                     </ProductCardContentTwo>
 
+                                    <CartAddOverlay>
+                                        <CartAdd src={CircletIcon} className="onHover"></CartAdd>
+                                    </CartAddOverlay>
+
                                 </ProductCard>
                             </Link>)
                         )
@@ -132,6 +150,7 @@ export default class Products extends Component {
                                             <ProductInStock>
                                                 OUT OF STOCK
                                             </ProductInStock>
+
                                         </ProductCardOverlauy>
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
@@ -155,6 +174,10 @@ export default class Products extends Component {
                                         <ProductCardContentTwo>
                                             {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
                                         </ProductCardContentTwo>
+
+                                        <CartAddOverlay>
+                                            <CartAdd src={CircletIcon} className="onHover"></CartAdd>
+                                        </CartAddOverlay>
 
                                     </ProductCard>
                                 </Link>)
@@ -198,6 +221,10 @@ export default class Products extends Component {
                                         <ProductCardContentTwo>
                                             {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
                                         </ProductCardContentTwo>
+
+                                        <CartAddOverlay>
+                                            <CartAdd src={CircletIcon} className="onHover"></CartAdd>
+                                        </CartAddOverlay>
 
                                     </ProductCard>
                                 </Link>)

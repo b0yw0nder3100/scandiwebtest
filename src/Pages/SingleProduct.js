@@ -26,6 +26,9 @@ const Span = styled.span`
 background: ${props => props.bg};
 width: ${props => props.width};
 height: ${props => props.height};
+font-size: 16px;
+font-weight: 400;
+line-height: 18px;
 border:2px solid var(--c-text);
 margin-right: 10px;
 padding: ${props => props.padding};
@@ -87,12 +90,12 @@ export class SingleProduct extends Component {
                                 {product.id === 'Color' ? (<DivTwo>
                                     <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
                                     {product.items.map((items) =>
-                                        <Span padding="1px 20px" bg={items.value}></Span>
+                                        <Span padding="10px 20px" bg={items.value}></Span>
                                     )}
                                 </DivTwo>) : (<DivTwo>
-                                    <Text padding="25px 0 25px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
+                                    <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
                                     {product.items.map((items) =>
-                                        <Span padding="13px 20px" width="63px" height="45px" bg={items.value}>{items.value}</Span>
+                                        <Span padding="10px 10px" width="63px" height="45px" bg={items.value}>{items.value}</Span>
                                     )}
                                 </DivTwo>)}
                             </div>
