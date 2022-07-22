@@ -21,6 +21,10 @@ const ProductCard = styled.div`
 position: relative;
 padding:16px;
 opacity: ${props => props.opacity};
+&:hover {
+    box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
+
+}
 `
 
 const ProductCardImage = styled.img`
