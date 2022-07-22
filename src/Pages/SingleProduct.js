@@ -101,6 +101,7 @@ export class SingleProduct extends Component {
                         <Text padding="38px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>Price:</Text>
 
 
+                        <Text padding="0 0 36px 0" fontSize='24px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.prices[isActiveCurrency].currency.symbol} {product.prices[isActiveCurrency].amount}</Text>
 
                         <AddToCartBtn>Add to Cart</AddToCartBtn>
 

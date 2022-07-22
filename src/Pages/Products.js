@@ -15,12 +15,11 @@ padding:80px 0 119px;
 font-weight: 400;
 font-size: 42px;
 line-height: 160%;
- text-transform: capitalize;
+text-transform: capitalize; 
 `
 const ProductCard = styled.div`
 position: relative;
 padding:16px;
-width:3px;
 opacity: ${props => props.opacity};
 `
 
@@ -43,12 +42,14 @@ font-size: 18px;
 line-height: 160%;
 color: var(--c-text);
 `
-const ProductInStock = styled.h1`
+const ProductCardOverlauy = styled.div`
 position: absolute;
 left:50%;
 top:50%;
-margin:auto;
 transform: translate(-50%, -50%);
+`
+const ProductInStock = styled.h1`
+position: relative;
 color: var(--c-text-two);
 font-size: 24px;
 font-weight: 400;
@@ -76,12 +77,14 @@ export default class Products extends Component {
                     {
                         isActive === 0 &&
                         Items.products.map((item) =>
-                            item.inStock === true ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                            item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                 <ProductCard opacity="0.5">
 
-                                    <ProductInStock>
-                                        OUT OF STOCK
-                                    </ProductInStock>
+                                    <ProductCardOverlauy>
+                                        <ProductInStock>
+                                            OUT OF STOCK
+                                        </ProductInStock>
+                                    </ProductCardOverlauy>
 
                                     <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
@@ -118,12 +121,14 @@ export default class Products extends Component {
                     <ProductWrapper>
                         {
                             Items.products.filter(x => x.category === 'clothes').map((item) =>
-                                item.inStock === true ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                     <ProductCard opacity="0.5">
 
-                                        <ProductInStock>
-                                            OUT OF STOCK
-                                        </ProductInStock>
+                                        <ProductCardOverlauy>
+                                            <ProductInStock>
+                                                OUT OF STOCK
+                                            </ProductInStock>
+                                        </ProductCardOverlauy>
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
                                         <ProductCardContent>
@@ -158,12 +163,14 @@ export default class Products extends Component {
                     <ProductWrapper>
                         {
                             Items.products.filter(x => x.category === 'tech').map((item) =>
-                                item.inStock === true ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
                                     <ProductCard opacity="0.5">
 
-                                        <ProductInStock>
-                                            OUT OF STOCK
-                                        </ProductInStock>
+                                        <ProductCardOverlauy>
+                                            <ProductInStock>
+                                                OUT OF STOCK
+                                            </ProductInStock>
+                                        </ProductCardOverlauy>
 
                                         <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
