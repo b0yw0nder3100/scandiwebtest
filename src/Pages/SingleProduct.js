@@ -12,26 +12,15 @@ justify-content: space-between;
 const ProductCardImage = styled.img`
 width: ${props => props.width};
 height: ${props => props.height};
-object-fit: contain`
-
+object-fit: contain
+`
 const Div = styled.div`
 display: flex;
-flex-direction: column;`
-
-const DivTwo = styled.div`
-padding:20px 0 0 0;
+flex-direction: column;
 `
-
-const Span = styled.span`
-background: ${props => props.bg};
-width: ${props => props.width};
-height: ${props => props.height};
-font-size: 16px;
-font-weight: 400;
-line-height: 18px;
-border:2px solid var(--c-text);
-margin-right: 10px;
-padding: ${props => props.padding};
+const Dive = styled.div`
+display: flex;
+padding:20px 0 0 0;
 `
 const Text = styled.p`
 font-size: ${props => props.fontSize};
@@ -51,16 +40,65 @@ width:292px;
 color: var(--c-white);
 text-transform: uppercase;
 `
+const Container = styled.label`
+  display: block;
+  position: relative;
+  margin-bottom: 12px;
+  margin-right: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`
+const Input = styled.input.attrs({ type: "radio", })`
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+`
+const Checkmark = styled.span`
+  position: relative;
+  padding: 15px 25px;
+  top: 0;
+  left: 0;
+  height: ${props => props.border ? '45px' : '36px'};
+  width: ${props => props.border ? '63px' : '36px'};
+  margin-right: 12px;
+  border: ${props => props.border ? '1px solid var(--c-text)' : 'none'};
+  background: ${props => props.bg};
+
+
+    ${Input}:checked + && {
+    background-color: ${props => props.border ? 'black' : 'none'};
+    border: ${props => props.bg ? '2px solid var(--c-primary)' : 'none'};
+    color: ${props => props.border ? 'white' : 'none'};
+    padding: ${props => props.bg ? '12px 23px' : 'none'};
+  }
+  
+
+}`
 
 export class SingleProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            active: false,
+            selectedOption: '',
+            color: '',
         }
+        this.active = this.active.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
-    componentDidMount() {
+    active = index => {
+        if (this.state.Atrribute1 === index) {
+            return this.setState({ Atrribute1: index })
+        }
+        this.setState({ Atrribute1: index })
+    }
 
-
+    handleChange = e => {
+        this.setState({ selectedOption: e.target.value });
     }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
@@ -68,6 +106,7 @@ export class SingleProduct extends Component {
         console.log('Props:', this.props)
         const product = Items.products.find((x) => x.id === this.props.params.productname)
         console.log(product);
+        product.attributes.map((items) => console.log(items.items))
         return (
             <>
                 <SingleProductContainer>
@@ -78,7 +117,7 @@ export class SingleProduct extends Component {
                     </Div>
 
                     <div>
-                        <ProductCardImage width='610px' height='511px' src={product.gallery}></ProductCardImage>
+                        <ProductCardImage width='610px' height='511px' src={product.gallery[0]}></ProductCardImage>
                     </div>
 
                     <div>
@@ -86,18 +125,40 @@ export class SingleProduct extends Component {
                         <Text padding="16px 0 43px 0" fontSize='30px' lineHeight="27px" fontWeight="400">{product.name}</Text>
                         {product.attributes.map((product) =>
                             <div>
-
-                                {product.id === 'Color' ? (<DivTwo>
-                                    <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
-                                    {product.items.map((items) =>
-                                        <Span padding="10px 20px" bg={items.value}></Span>
-                                    )}
-                                </DivTwo>) : (<DivTwo>
-                                    <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
-                                    {product.items.map((items) =>
-                                        <Span padding="10px 10px" width="63px" height="45px" bg={items.value}>{items.value}</Span>
-                                    )}
-                                </DivTwo>)}
+                                {
+                                    product.id === 'Color' ?
+                                        (
+                                            <div>
+                                                <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
+                                                <Dive>
+                                                    {
+                                                        product.items.map((items, index) =>
+                                                            <Container class="container">
+                                                                <Input type="radio" name={product.id} value={items.id} onChange={(e) => this.setState({ color: e.target.value })} />
+                                                                <Checkmark class="checkmark" bg={items.value}></Checkmark>
+                                                            </Container>
+                                                        )
+                                                    }
+                                                </Dive>
+                                            </div>
+                                        )
+                                        :
+                                        (
+                                            <div>
+                                                <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
+                                                <Dive>
+                                                    {
+                                                        product.items.map((items, index) =>
+                                                            <Container class="container">
+                                                                <Input type="radio" name={product.id} value={items.value} onChange={this.handleChange} />
+                                                                <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
+                                                            </Container>
+                                                        )
+                                                    }
+                                                </Dive>
+                                            </div>
+                                        )
+                                }
                             </div>
                         )}
 
