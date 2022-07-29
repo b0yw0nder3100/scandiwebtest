@@ -17,7 +17,6 @@ import {
   Div,
   Img,
   Option,
-  ProductsHeader,
   Select,
   SelectContainer
 } from './Styles/NavbarStyles';
@@ -30,8 +29,9 @@ class App extends Component {
       currencyItems: [],
       allItems: [],
       isActive: false,
-      isActiveCurrency: false,
-      activeCurrency: false
+      isActiveCurrency: 0,
+      activeCurrency: false,
+      cart: JSON.parse(localStorage.getItem('ScandiwebCart')).length < 1 ? [] : JSON.parse(localStorage.getItem('ScandiwebCart'))
     }
     this.handleCurrency = this.handleCurrency.bind(this);
     this.active = this.active.bind(this);
@@ -127,6 +127,7 @@ class App extends Component {
   componentDidUpdate() {
   }
   render() {
+
     return (
       <div>
         <Nav>

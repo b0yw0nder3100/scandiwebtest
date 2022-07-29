@@ -65,7 +65,7 @@ const Checkmark = styled.span`
   height: ${props => props.border ? '45px' : '36px'};
   width: ${props => props.border ? '63px' : '36px'};
   margin-right: 12px;
-  border: ${props => props.border ? '1px solid var(--c-text)' : 'none'};
+  border: ${props => props.border ? '1px solid var(--c-text)' : '0.1px solid rgb(17, 17, 17)'};
   background: ${props => props.bg};
 
 
@@ -84,29 +84,36 @@ export class SingleProduct extends Component {
         super(props);
         this.state = {
             active: false,
-            selectedOption: '',
+            selectedOption1: '',
+            selectedOption2: '',
+            selectedOption3: '',
             color: '',
+            test: {}
         }
-        this.active = this.active.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        // this.updateTest = this.updateTest.bind(this);
+        this.AddToCart = this.AddToCart.bind(this);
     }
-    active = index => {
-        if (this.state.Atrribute1 === index) {
-            return this.setState({ Atrribute1: index })
-        }
-        this.setState({ Atrribute1: index })
-    }
-
+    // updateTest = (n, v) => {
+    //     this.setState({test: prevState, {
+    //         prevState[n]: v
+    //     }})
+    // }
     handleChange = e => {
-        this.setState({ selectedOption: e.target.value });
+        this.setState({ selectedOption1: e.target.value, selectedOption2: e.target.value, selectedOption3: e.target.value });
+    }
+    AddToCart = e => {
+        e.preventDefault();
+        console.log(this.state.color, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3);
+    }
+    componentDidMount() {
+        this.setState({ isActiveCurrency: 0 })
     }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
         const { isActiveCurrency } = this.props
         console.log('Props:', this.props)
         const product = Items.products.find((x) => x.id === this.props.params.productname)
-        console.log(product);
-        product.attributes.map((items) => console.log(items.items))
         return (
             <>
                 <SingleProductContainer>
@@ -123,7 +130,7 @@ export class SingleProduct extends Component {
                     <div>
                         <Text fontSize='30px' lineHeight="27px" fontWeight="700">{product.brand}</Text>
                         <Text padding="16px 0 43px 0" fontSize='30px' lineHeight="27px" fontWeight="400">{product.name}</Text>
-                        {product.attributes.map((product) =>
+                        {product.attributes.map((product, index) =>
                             <div>
                                 {
                                     product.id === 'Color' ?
@@ -134,7 +141,7 @@ export class SingleProduct extends Component {
                                                     {
                                                         product.items.map((items, index) =>
                                                             <Container class="container">
-                                                                <Input type="radio" name={product.id} value={items.id} onChange={(e) => this.setState({ color: e.target.value })} />
+                                                                <Input type="radio" name={product.id} value={items.id} onChange={(e) => this.setState({ color: e.target.value })} checked={this.state.color === items.id} />
                                                                 <Checkmark class="checkmark" bg={items.value}></Checkmark>
                                                             </Container>
                                                         )
@@ -145,17 +152,62 @@ export class SingleProduct extends Component {
                                         :
                                         (
                                             <div>
-                                                <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
-                                                <Dive>
+                                                <div>
                                                     {
-                                                        product.items.map((items, index) =>
-                                                            <Container class="container">
-                                                                <Input type="radio" name={product.id} value={items.value} onChange={this.handleChange} />
-                                                                <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
-                                                            </Container>
-                                                        )
+                                                        index === 0 &&
+                                                        <div>
+                                                            <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
+                                                            <Dive>
+                                                                {
+                                                                    product.items.map((items, index) =>
+                                                                        <Container class="container">
+                                                                            <Input type="radio" name={product.id} value={items.value} onChange={(e) => this.setState({ selectedOption1: e.target.value })} />
+                                                                            <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
+                                                                        </Container>
+                                                                    )
+                                                                }
+                                                            </Dive>
+                                                        </div>
                                                     }
-                                                </Dive>
+                                                </div>
+
+                                                <div>
+                                                    {
+                                                        index === 1 &&
+                                                        <div>
+                                                            <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
+                                                            <Dive>
+                                                                {
+                                                                    product.items.map((items, index) =>
+                                                                        <Container class="container">
+                                                                            <Input type="radio" name={product.id} value={items.value} onChange={(e) => this.setState({ selectedOption2: e.target.value })} />
+                                                                            <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
+                                                                        </Container>
+                                                                    )
+                                                                }
+                                                            </Dive>
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                <div>
+                                                    {
+                                                        index === 2 &&
+                                                        <div>
+                                                            <Text padding="10px 0 10px 0" fontSize='18px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.id}:</Text>
+                                                            <Dive>
+                                                                {
+                                                                    product.items.map((items, index) =>
+                                                                        <Container class="container">
+                                                                            <Input type="radio" name={product.id} value={items.value} onChange={(e) => this.setState({ selectedOption3: e.target.value })} />
+                                                                            <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
+                                                                        </Container>
+                                                                    )
+                                                                }
+                                                            </Dive>
+                                                        </div>
+                                                    }
+                                                </div>
                                             </div>
                                         )
                                 }
@@ -167,7 +219,7 @@ export class SingleProduct extends Component {
 
                         <Text padding="0 0 36px 0" fontSize='24px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.prices[isActiveCurrency].currency.symbol} {product.prices[isActiveCurrency].amount}</Text>
 
-                        <AddToCartBtn>Add to Cart</AddToCartBtn>
+                        <AddToCartBtn onClick={this.AddToCart}>Add to Cart</AddToCartBtn>
 
                         <Text padding="56px 0 0 0" fontSize='16px' lineHeight="160%" fontWeight="400" dangerouslySetInnerHTML={{ __html: product.description }} />
                     </div>

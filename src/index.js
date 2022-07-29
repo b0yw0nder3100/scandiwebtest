@@ -7,7 +7,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+if (localStorage.getItem('ScandiwebCart') === null) {
+  localStorage.setItem('ScandiwebCart', JSON.stringify([]))
+} else {
 
+}
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 

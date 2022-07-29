@@ -81,6 +81,7 @@ margin-right:22px;
 cursor:pointer;
 `
 export const Select = styled.ul`
+z-index:1;
 position:absolute;
 width:114px;
 margin-top:12px;
@@ -90,6 +91,7 @@ background: var(--c-white);
 filter: drop-shadow(0px 4px 35px rgba(168, 172, 176, 0.19));
 `
 export const Option = styled.li`
+
 list-style:none;
 padding:20px;
 :hover{
