@@ -1,78 +1,22 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 
+import {
+    CartAdd,
+    CartAddOverlay,
+    ProductCard,
+    ProductCardContent,
+    ProductCardContentTwo,
+    ProductCardImage,
+    ProductCardOverlauy,
+    ProductInStock,
+    ProductWrapper,
+    ProductsContainer,
+    ProductsHeader,
+} from "../Styles/ProductStyles";
 import CircletIcon from '../Assets/interface/Circle-Icon.png'
 
-const ProductsContainer = styled.section`
-padding: 0px 101px 0px 117px;
-`
-const ProductWrapper = styled.div`
-display: grid;
-grid-gap:40px;
-grid-template-columns: repeat(3, 1fr);
-`
-const ProductsHeader = styled.h1`
-padding:80px 0 119px;
-font-weight: 400;
-font-size: 42px;
-line-height: 160%;
-text-transform: capitalize; 
-`
-const ProductCard = styled.div`
-position: relative;
-padding:16px;
-opacity: ${props => props.opacity};
-&:hover {
-    box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
 
-}
-&:hover .onHover {
-    opacity: 1;
-}
-`
-
-const ProductCardImage = styled.img`
-width:354px;
-height:330px;
-object-fit: contain;`
-
-const ProductCardContent = styled.h1`
-padding:24px 0 0 0;
-width:354px;
-font-weight: 300;
-font-size: 18px;
-line-height: 160%;
-color: var(--c-text);
-`
-const ProductCardContentTwo = styled.h1`
-width:354px;
-font-weight: 500;
-font-size: 18px;
-line-height: 160%;
-color: var(--c-text);
-`
-const ProductCardOverlauy = styled.div`
-position: absolute;
-left:50%;
-top:50%;
-transform: translate(-50%, -50%);
-`
-const ProductInStock = styled.h1`
-position: relative;
-color: var(--c-text-two);
-font-size: 24px;
-font-weight: 400;
-line-height: 160%;
-`
-const CartAddOverlay = styled.div`
-position: absolute;
-bottom:72px;
-right:31px;
-`
-const CartAdd = styled.img`
-opacity: 0;
-`
 export default class Products extends Component {
     constructor(props) {
         super(props);

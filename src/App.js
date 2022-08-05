@@ -20,6 +20,7 @@ import {
   Select,
   SelectContainer,
   CartItems,
+  CartIcon,
 } from './Styles/NavbarStyles';
 import CartOverlay from './components/organisms/CartOverlay';
 
@@ -192,21 +193,18 @@ class App extends Component {
 
               <Img src={dropdown} width="9px" height='6px' marginLeft="-15px" marginRight="30px" active={this.state.activeCurrency} />
 
-              <div onClick={() => this.setState({ cartOverlay: !this.state.cartOverlay })}>
+              <CartIcon onClick={() => this.setState({ cartOverlay: !this.state.cartOverlay })}>
                 <Img src={shoppingCart} width='20px' height='20px' alt='shopping cart' />
                 <CartItems>{cartItems.length > 0 ? cartItems.length : 0}</CartItems>
-              </div>
+              </CartIcon>
             </Div>
           </NavBarContainer>
-
-          {
-            this.state.cartOverlay &&
-            <CartOverlay />
-          }
-
         </Nav>
 
-
+        {
+          this.state.cartOverlay &&
+          <CartOverlay />
+        }
         <Routes>
           <Route basename={'/'} path='/'
             element={<Products

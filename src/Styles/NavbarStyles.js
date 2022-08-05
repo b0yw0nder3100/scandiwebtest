@@ -128,3 +128,7 @@ color: var(--c-white);
 `
 export const CartContainer = styled.div`
 positon:relative;`
+
+export const CartIcon = styled.div`
+cursor: pointer;
+`
