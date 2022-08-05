@@ -91,7 +91,6 @@ background: var(--c-white);
 filter: drop-shadow(0px 4px 35px rgba(168, 172, 176, 0.19));
 `
 export const Option = styled.li`
-
 list-style:none;
 padding:20px;
 :hover{
@@ -115,11 +114,17 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 `
-
-export const ProductsHeader = styled.h1`
-padding:80px 0 119px;
-font-weight: 400;
-font-size: 42px;
-line-height: 160%;
- text-transform: capitalize;
+export const CartItems = styled.h1`
+position:absolute;
+top:15px;
+right:90px;
+background: var(--c-text);
+padding:5px 7px;
+border-radius: 50%;
+text-align: center;
+font-weight: 700;
+font-size: 14px;
+color: var(--c-white);
 `
+export const CartContainer = styled.div`
+positon:relative;`

@@ -18,8 +18,10 @@ import {
   Img,
   Option,
   Select,
-  SelectContainer
+  SelectContainer,
+  CartItems,
 } from './Styles/NavbarStyles';
+import CartOverlay from './components/organisms/CartOverlay';
 
 class App extends Component {
   constructor(props) {
@@ -31,7 +33,8 @@ class App extends Component {
       isActive: false,
       isActiveCurrency: 0,
       activeCurrency: false,
-      cart: JSON.parse(localStorage.getItem('ScandiwebCart')).length < 1 ? [] : JSON.parse(localStorage.getItem('ScandiwebCart'))
+      cart: JSON.parse(localStorage.getItem('ScandiwebCart')).length < 1 ? [] : JSON.parse(localStorage.getItem('ScandiwebCart')),
+      cartOverlay: false,
     }
     this.handleCurrency = this.handleCurrency.bind(this);
     this.active = this.active.bind(this);
@@ -127,6 +130,17 @@ class App extends Component {
   componentDidUpdate() {
   }
   render() {
+    const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
+
+    localStorage.setItem('ScandiwebCart', JSON.stringify(this.state.cart))
+    const updateCart = (name, brand, image, currencySymbol, price, color, attribute1, attribute2, attribute3, attributes) => {
+      const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
+      this.setState({ cart: ([...cartItems, { name, brand, image, currencySymbol, price, color, attribute1, attribute2, attribute3, attributes }]) })
+      let newset = cartItems.filter((pep) => pep.name !== name)
+      this.setState({ cart: ([...newset, { name, brand, image, currencySymbol, price, color, attribute1, attribute2, attribute3, attributes }]) })
+      alert(`${name} has been added to your cart`)
+      console.log(this.state.cart);
+    }
 
     return (
       <div>
@@ -178,13 +192,17 @@ class App extends Component {
 
               <Img src={dropdown} width="9px" height='6px' marginLeft="-15px" marginRight="30px" active={this.state.activeCurrency} />
 
-              <div>
+              <div onClick={() => this.setState({ cartOverlay: !this.state.cartOverlay })}>
                 <Img src={shoppingCart} width='20px' height='20px' alt='shopping cart' />
+                <CartItems>{cartItems.length > 0 ? cartItems.length : 0}</CartItems>
               </div>
             </Div>
           </NavBarContainer>
 
-
+          {
+            this.state.cartOverlay &&
+            <CartOverlay />
+          }
 
         </Nav>
 
@@ -197,6 +215,7 @@ class App extends Component {
               currencyItems={this.state.currencyItems}
               isActive={this.state.isActive}
               isActiveCurrency={this.state.isActiveCurrency}
+              cartOverlay={this.state.cartOverlay}
             />}>
 
             <Route path='/:all' element={<Products />} />
@@ -205,7 +224,7 @@ class App extends Component {
           </Route>
 
 
-          <Route path='/:category/:productname' element={<SingleProduct isActiveCurrency={this.state.isActiveCurrency} />} />
+          <Route path='/:category/:productname' element={<SingleProduct cartOverlay={this.state.cartOverlay} isActiveCurrency={this.state.isActiveCurrency} updateCart={updateCart} />} />
         </Routes>
       </div>
     );

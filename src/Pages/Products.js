@@ -35,7 +35,7 @@ opacity: ${props => props.opacity};
 const ProductCardImage = styled.img`
 width:354px;
 height:330px;
-object-fit: contain`
+object-fit: contain;`
 
 const ProductCardContent = styled.h1`
 padding:24px 0 0 0;
@@ -81,9 +81,9 @@ export default class Products extends Component {
     }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
-        const { active, navItems, isActive, isActiveCurrency } = this.props
+        const { active, navItems, isActive, isActiveCurrency, cartOverlay } = this.props
         return (
-            <ProductsContainer>
+            <ProductsContainer onClick={() => this.setState({ cartOverlay: false })} cartOverlay={cartOverlay}>
 
                 {navItems.map((item, index) =>
                     <div key={index}>

@@ -83,6 +83,7 @@ export class SingleProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            product: JSON.parse(localStorage.getItem('dataItems')).products.find((x) => x.id === this.props.params.productname),
             active: false,
             selectedOption1: '',
             selectedOption2: '',
@@ -94,33 +95,40 @@ export class SingleProduct extends Component {
         // this.updateTest = this.updateTest.bind(this);
         this.AddToCart = this.AddToCart.bind(this);
     }
-    // updateTest = (n, v) => {
-    //     this.setState({test: prevState, {
-    //         prevState[n]: v
-    //     }})
-    // }
+
     handleChange = e => {
         this.setState({ selectedOption1: e.target.value, selectedOption2: e.target.value, selectedOption3: e.target.value });
     }
     AddToCart = e => {
         e.preventDefault();
-        console.log(this.state.color, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3);
     }
     componentDidMount() {
         this.setState({ isActiveCurrency: 0 })
+        if (this.state.product.attributes.length === 1) {
+            this.setState({ selectedOption1: this.state.product.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).id })
+        } else if (this.state.product.attributes.length === 2) {
+            this.setState({ selectedOption1: this.state.product.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).id })
+            this.setState({ selectedOption2: this.state.product.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id })
+        } else if (this.state.product.attributes.length === 3) {
+            this.setState({ selectedOption1: this.state.product.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).id })
+            this.setState({ selectedOption2: this.state.product.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id })
+            this.setState({ selectedOption3: this.state.product.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id })
+        }
+
     }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
         const { isActiveCurrency } = this.props
-        console.log('Props:', this.props)
+        // console.log('Props:', this.props)
         const product = Items.products.find((x) => x.id === this.props.params.productname)
+        const { selectedOption4 } = this.state
         return (
             <>
                 <SingleProductContainer>
 
                     <Div>
                         {product.gallery.map((items, index) =>
-                            <ProductCardImage width='79px' height='80px' src={items}></ProductCardImage>)}
+                            <ProductCardImage width='79px' height='80px' src={items} key={index}></ProductCardImage>)}
                     </Div>
 
                     <div>
@@ -141,7 +149,7 @@ export class SingleProduct extends Component {
                                                     {
                                                         product.items.map((items, index) =>
                                                             <Container class="container">
-                                                                <Input type="radio" name={product.id} value={items.id} onChange={(e) => this.setState({ color: e.target.value })} checked={this.state.color === items.id} />
+                                                                <Input type="radio" name={product.id} value={items.id} onChange={(e) => this.setState({ color: e.target.value })} checked={this.state.color === items.id === true} />
                                                                 <Checkmark class="checkmark" bg={items.value}></Checkmark>
                                                             </Container>
                                                         )
@@ -161,7 +169,7 @@ export class SingleProduct extends Component {
                                                                 {
                                                                     product.items.map((items, index) =>
                                                                         <Container class="container">
-                                                                            <Input type="radio" name={product.id} value={items.value} onChange={(e) => this.setState({ selectedOption1: e.target.value })} />
+                                                                            <Input type="radio" name={product.id} value={items.value} onChange={(e) => this.setState({ selectedOption4: e.target.value })} />
                                                                             <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
                                                                         </Container>
                                                                     )
@@ -219,7 +227,7 @@ export class SingleProduct extends Component {
 
                         <Text padding="0 0 36px 0" fontSize='24px' lineHeight="18px" fontWeight="700" textTransform='uppercase'>{product.prices[isActiveCurrency].currency.symbol} {product.prices[isActiveCurrency].amount}</Text>
 
-                        <AddToCartBtn onClick={this.AddToCart}>Add to Cart</AddToCartBtn>
+                        <AddToCartBtn onClick={() => this.props.updateCart(product.name, product.brand, product.gallery[0], product.prices[isActiveCurrency].currency.symbol, product.prices[isActiveCurrency].amount, this.state.color, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3, product.attributes)}>Add to Cart</AddToCartBtn>
 
                         <Text padding="56px 0 0 0" fontSize='16px' lineHeight="160%" fontWeight="400" dangerouslySetInnerHTML={{ __html: product.description }} />
                     </div>
