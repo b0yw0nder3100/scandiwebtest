@@ -25,7 +25,7 @@ export default class Products extends Component {
     }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
-        const { active, navItems, isActive, isActiveCurrency, cartOverlay } = this.props
+        const { active, navItems, isActive, isActiveCurrency, cartOverlay, product, selectedOption1, selectedOption2, selectedOption3 } = this.props
         return (
             <ProductsContainer onClick={() => this.setState({ cartOverlay: false })} cartOverlay={cartOverlay}>
 
@@ -60,24 +60,28 @@ export default class Products extends Component {
 
 
                                 </ProductCard>
-                            </Link>) : (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                <ProductCard>
-                                    <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+                            </Link>) : (<ProductCard>
+                                <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                    <div>
+                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
-                                    <ProductCardContent>
-                                        {item.name}
-                                    </ProductCardContent>
+                                        <ProductCardContent>
+                                            {item.name}
+                                        </ProductCardContent>
 
-                                    <ProductCardContentTwo>
-                                        {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                    </ProductCardContentTwo>
+                                        <ProductCardContentTwo>
+                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                        </ProductCardContentTwo>
 
-                                    <CartAddOverlay>
-                                        <CartAdd src={CircletIcon} className="onHover"></CartAdd>
-                                    </CartAddOverlay>
 
-                                </ProductCard>
-                            </Link>)
+
+                                    </div>
+                                </Link>
+
+                                <CartAddOverlay>
+                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(product.name, product.brand, product.gallery[0], product.prices[isActiveCurrency].currency.symbol, product.prices[isActiveCurrency].amount, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3, product.attributes)} className="onHover"></CartAdd>
+                                </CartAddOverlay>
+                            </ProductCard>)
                         )
                     }
                 </ProductWrapper>
@@ -107,24 +111,28 @@ export default class Products extends Component {
                                         </ProductCardContentTwo>
 
                                     </ProductCard>
-                                </Link>) : (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                    <ProductCard>
-                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+                                </Link>) : (<ProductCard>
+                                    <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                        <div>
+                                            <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
-                                        <ProductCardContent>
-                                            {item.name}
-                                        </ProductCardContent>
+                                            <ProductCardContent>
+                                                {item.name}
+                                            </ProductCardContent>
 
-                                        <ProductCardContentTwo>
-                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                        </ProductCardContentTwo>
+                                            <ProductCardContentTwo>
+                                                {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                            </ProductCardContentTwo>
 
-                                        <CartAddOverlay>
-                                            <CartAdd src={CircletIcon} className="onHover"></CartAdd>
-                                        </CartAddOverlay>
 
-                                    </ProductCard>
-                                </Link>)
+
+                                        </div>
+                                    </Link>
+
+                                    <CartAddOverlay>
+                                        <CartAdd src={CircletIcon} className="onHover"></CartAdd>
+                                    </CartAddOverlay>
+                                </ProductCard>)
                             )
                         }
                     </ProductWrapper>
@@ -154,24 +162,28 @@ export default class Products extends Component {
                                         </ProductCardContentTwo>
 
                                     </ProductCard>
-                                </Link>) : (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                    <ProductCard>
-                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+                                </Link>) : (<ProductCard>
+                                    <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                        <div>
+                                            <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
-                                        <ProductCardContent>
-                                            {item.name}
-                                        </ProductCardContent>
+                                            <ProductCardContent>
+                                                {item.name}
+                                            </ProductCardContent>
 
-                                        <ProductCardContentTwo>
-                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                        </ProductCardContentTwo>
+                                            <ProductCardContentTwo>
+                                                {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                            </ProductCardContentTwo>
 
-                                        <CartAddOverlay>
-                                            <CartAdd src={CircletIcon} className="onHover"></CartAdd>
-                                        </CartAddOverlay>
 
-                                    </ProductCard>
-                                </Link>)
+
+                                        </div>
+                                    </Link>
+
+                                    <CartAddOverlay>
+                                        <CartAdd src={CircletIcon} className="onHover"></CartAdd>
+                                    </CartAddOverlay>
+                                </ProductCard>)
                             )
                         }
                     </ProductWrapper>

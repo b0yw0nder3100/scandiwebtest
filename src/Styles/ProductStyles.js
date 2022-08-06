@@ -68,4 +68,5 @@ right:31px;
 `
 export const CartAdd = styled.img`
 opacity: 0;
+z-index: 2;
 `

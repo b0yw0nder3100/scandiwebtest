@@ -23,6 +23,7 @@ import {
   CartIcon,
 } from './Styles/NavbarStyles';
 import CartOverlay from './components/organisms/CartOverlay';
+import withRouter from './components/molecules/withRouter';
 
 class App extends Component {
   constructor(props) {
@@ -134,11 +135,11 @@ class App extends Component {
     const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
 
     localStorage.setItem('ScandiwebCart', JSON.stringify(this.state.cart))
-    const updateCart = (name, brand, image, currencySymbol, price, color, attribute1, attribute2, attribute3, attributes) => {
+    const updateCart = (name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes) => {
       const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-      this.setState({ cart: ([...cartItems, { name, brand, image, currencySymbol, price, color, attribute1, attribute2, attribute3, attributes }]) })
+      this.setState({ cart: ([...cartItems, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes }]) })
       let newset = cartItems.filter((pep) => pep.name !== name)
-      this.setState({ cart: ([...newset, { name, brand, image, currencySymbol, price, color, attribute1, attribute2, attribute3, attributes }]) })
+      this.setState({ cart: ([...newset, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes }]) })
       alert(`${name} has been added to your cart`)
       console.log(this.state.cart);
     }
@@ -214,6 +215,7 @@ class App extends Component {
               isActive={this.state.isActive}
               isActiveCurrency={this.state.isActiveCurrency}
               cartOverlay={this.state.cartOverlay}
+              updateCart={updateCart}
             />}>
 
             <Route path='/:all' element={<Products />} />
@@ -222,11 +224,12 @@ class App extends Component {
           </Route>
 
 
-          <Route path='/:category/:productname' element={<SingleProduct cartOverlay={this.state.cartOverlay} isActiveCurrency={this.state.isActiveCurrency} updateCart={updateCart} />} />
+          <Route path='/:category/:productname' element={<SingleProduct cartOverlay={this.state.cartOverlay} isActiveCurrency={this.state.isActiveCurrency} updateCart={updateCart}
+          />} />
         </Routes>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
