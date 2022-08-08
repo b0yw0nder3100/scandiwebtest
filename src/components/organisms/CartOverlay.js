@@ -1,129 +1,24 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
-import { CartItems } from '../../Styles/NavbarStyles'
+import { Link } from 'react-router-dom'
 
-const CartOverlayWrapper = styled.div`
-position: absolute;
-background: rgba(57, 55, 72, 0.22);
-width:100%;
-height:100vh;
-z-index: 2;
-`
-const CartOverlayContainer = styled.div`
-position: relative;
-float:right;
-margin-right:88px;
-width:325px;
-height: max-content;
-padding:32px 16px;
-z-index: 3;
-background: var(--c-white);
-`
-const ProductCardImage = styled.img`
-width: ${props => props.width};
-height: ${props => props.height}; 
-object-fit: contain;
-`
-const TotalWrapper = styled.div`
-display:flex;
-justify-content:space-between;
-padding:0 0 32px 0;
-`
-const Span = styled.div`
-background: ${props => props.bg};
-width: ${props => props.width};
-height: ${props => props.height};
-border:${props => props.noborder ? '0' : '2px solid var(--c-text)'};
-margin-right: 8px;
-text-align:center;
-font-weight: 400;
-font-size: 14px;
-line-height: 160%;
-padding: ${props => props.padding};
-`
-const Divr = styled.div`
-display:flex;
-justify-content: right;
-`
-const Divs = styled.div`
-width:300px;
-height:max-content;
-display:flex;
-justify-content:space-between;
-margin:40px 0;
-`
-const Divc = styled.div`
-display:flex;
-flex-direction: column;
-justify-content: space-between;
-text-align: center;
-`
-const Text = styled.p`
-font-size: ${props => props.fontSize};
-line-height: ${props => props.lineHeight};
-font-weight: ${props => props.fontWeight};
-padding: ${props => props.padding};
-text-transform: ${props => props.textTransform};
-color: var(-c--text);
-`
-const Dive = styled.div`
-display: flex;
-padding:5px 0 0 0;
-`
-const Container = styled.label`
-  display: block;
-  position: relative;
-  margin-right: 4px;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-`
-const Input = styled.input.attrs({ type: "radio", })`
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-`
-const CheckmarkWrapper = styled.span`
-cursor: pointer;
-   ${Input}:checked + && {
-    border: ${props => props.bg ? '2px solid var(--c-primary)' : 'none'};
-    padding: ${props => props.bg ? '2px 2px 4px 2px' : 'none'};
-  }
-
-}`
-const Checkmark = styled.span`
-  position: relative;
-  padding: ${props => props.border ? '5px 8px' : '2px 10px'};;
-  top: 0;
-  left: 0;
-font-weight: 400;
-font-size: 14px;
-line-height: 160%;
-  border: ${props => props.border ? '1px solid var(--c-text)' : '0.1px solid rgb(17, 17, 17)'};
-  background: ${props => props.bg};
-
-
-    ${Input}:checked + && {
-    background-color: ${props => props.border ? 'black' : 'none'};
-    color: ${props => props.border ? 'white' : 'none'};
-  }
-}`
-const Button = styled.button`
-font-weight: 600;
-font-size: 14px;
-line-height: 120%;
-padding: 16px 32px;
-text-transform:uppercase;
-background: ${(props) => props.plain ? 'var(--c-white)' : 'var(--c-primary)'};
-border:  ${(props) => props.plain ? '1px solid var(--c-text)' : 'none'};
-color:  ${(props) => props.plain ? 'var(--c-text)' : 'var(--c-white)'};
-`
-const ButtonWrapper = styled.div`
-display:flex;
-justify-content:space-between;
-`
+import {
+    Button,
+    ButtonWrapper,
+    CartOverlayContainer,
+    CartOverlayWrapper,
+    Checkmark,
+    CheckmarkWrapper,
+    Container,
+    Divc,
+    Dive,
+    Divr,
+    Divs,
+    Input,
+    ProductCardImage,
+    Span,
+    Text,
+    TotalWrapper
+} from "../../Styles/CartOverlayStyles";
 export default class CartOverlay extends Component {
     constructor(props) {
         super(props);
@@ -150,10 +45,11 @@ export default class CartOverlay extends Component {
         this.setState({ isActive: index })
     }
     componentDidMount() {
+
     }
     render() {
         const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-        console.log(cartItems.reduce((a, c) => a + c.price, 0))
+        const { removeOverlay, updateCart } = this.props
         return (
             <CartOverlayWrapper>
                 <CartOverlayContainer>
@@ -182,16 +78,16 @@ export default class CartOverlay extends Component {
                                                                     <Dive>
                                                                         {
                                                                             product.id === "Color" ? (product.items.map((items, index) =>
-                                                                                <Container class="container">
-                                                                                    <Input type="radio" name={items.id} value={items.id} checked={item.attribute1 === items.id} />
-                                                                                    <CheckmarkWrapper bg={items.value} key={index}>
-                                                                                        <Checkmark class="checkmark" bg={items.value}></Checkmark>
+                                                                                <Container className="container" key={index}>
+                                                                                    <Input type="radio" name={items.id + index} value={items.id} checked={item.attribute1 === items.value} readOnly />
+                                                                                    <CheckmarkWrapper bg={items.value}>
+                                                                                        <Checkmark className="checkmark" bg={items.value}></Checkmark>
                                                                                     </CheckmarkWrapper>
                                                                                 </Container>
                                                                             )) : (product.items.map((items, index) =>
-                                                                                <Container class="container" key={index}>
-                                                                                    <Input type="radio" name={items.id} value={items.value} checked={item.attribute1 === items.value} />
-                                                                                    <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
+                                                                                <Container className="container" key={index}>
+                                                                                    <Input type="radio" name={items.id + index} value={items.value} checked={item.attribute1 === items.value} readOnly />
+                                                                                    <Checkmark className="checkmark" border data={items.value}>{items.value}</Checkmark>
                                                                                 </Container>
                                                                             ))
                                                                         }
@@ -208,16 +104,16 @@ export default class CartOverlay extends Component {
                                                                     <Dive>
                                                                         {
                                                                             product.id === "Color" ? (product.items.map((items, index) =>
-                                                                                <Container class="container" key={index}>
-                                                                                    <Input type="radio" name={items.id} value={items.id} checked={item.attribute2 === items.id} />
+                                                                                <Container className="container" key={index}>
+                                                                                    <Input type="radio" name={items.id} value={items.id} checked={item.attribute2 === items.value} readOnly />
                                                                                     <CheckmarkWrapper bg={items.value}>
-                                                                                        <Checkmark class="checkmark" bg={items.value}></Checkmark>
+                                                                                        <Checkmark className="checkmark" bg={items.value}></Checkmark>
                                                                                     </CheckmarkWrapper>
                                                                                 </Container>
                                                                             )) : (product.items.map((items, index) =>
-                                                                                <Container class="container" key={index}>
-                                                                                    <Input type="radio" name={items.id} value={items.value} checked={item.attribute2 === items.value} />
-                                                                                    <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
+                                                                                <Container className="container" key={index}>
+                                                                                    <Input type="radio" name={items.id + index} value={items.value} checked={item.attribute2 === items.value} readOnly />
+                                                                                    <Checkmark className="checkmark" border data={items.value}>{items.value}</Checkmark>
                                                                                 </Container>
                                                                             ))
                                                                         }
@@ -234,16 +130,16 @@ export default class CartOverlay extends Component {
                                                                     <Dive>
                                                                         {
                                                                             product.id === "Color" ? (product.items.map((items, index) =>
-                                                                                <Container class="container" key={index}>
-                                                                                    <Input type="radio" name={items.id} value={items.id} checked={item.attribute3 === items.id} />
+                                                                                <Container className="container" key={index}>
+                                                                                    <Input type="radio" name={items.id} value={items.id} checked={item.attribute3 === items.value} readOnly />
                                                                                     <CheckmarkWrapper bg={items.value}>
-                                                                                        <Checkmark class="checkmark" bg={items.value}></Checkmark>
+                                                                                        <Checkmark className="checkmark" bg={items.value}></Checkmark>
                                                                                     </CheckmarkWrapper>
                                                                                 </Container>
                                                                             )) : (product.items.map((items, index) =>
-                                                                                <Container class="container" key={index}>
-                                                                                    <Input type="radio" name={items.id} value={items.value} checked={item.attribute3 === items.value} />
-                                                                                    <Checkmark class="checkmark" border data={items.value}>{items.value}</Checkmark>
+                                                                                <Container className="container" key={index}>
+                                                                                    <Input type="radio" name={items.id} value={items.value} checked={item.attribute3 === items.value} readOnly />
+                                                                                    <Checkmark className="checkmark" border data={items.value}>{items.value}</Checkmark>
                                                                                 </Container>
                                                                             ))
                                                                         }
@@ -261,9 +157,9 @@ export default class CartOverlay extends Component {
 
                                 <Divr>
                                     <Divc>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={this.Increase}>+</Span>
-                                        <Span noborder>{this.state.count}</Span>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={this.Decrease}>-</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.currencySymbol, item.price, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1)}>+</Span>
+                                        <Span className="amount" noborder>{item.amount}</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.currencySymbol, item.price, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1)}>-</Span>
                                     </Divc>
 
                                     <ProductCardImage width='101px' height='190px' src={item.image}></ProductCardImage>
@@ -273,10 +169,12 @@ export default class CartOverlay extends Component {
 
                     <TotalWrapper>
                         <Text fontSize='16px' lineHeight="18px" fontWeight="500" >Total</Text>
-                        <Text fontSize='16px' lineHeight="18px" fontWeight="500" >{cartItems.map((i, j) => j == 0 && i.currencySymbol)} {cartItems.reduce((a, c) => a + c.price, 0)}</Text>
+                        <Text fontSize='16px' lineHeight="18px" fontWeight="500" >{cartItems.map((i, j) => j == 0 && i.currencySymbol)} {(cartItems.reduce((a, c) => a + c.price * c.amount, 0).toFixed(2))}</Text>
                     </TotalWrapper>
                     <ButtonWrapper>
-                        <Button plain >view bag</Button>
+                        <Link to='/cartpage'>
+                            <Button plain onClick={removeOverlay}>view bag</Button>
+                        </Link>
                         <Button>check out</Button>
                     </ButtonWrapper>
                 </CartOverlayContainer>

@@ -1,124 +1,97 @@
-// import React, { Component } from 'react'
-// import styled from 'styled-components'
-// import { Link } from 'react-router-dom';
-
-// import shoppingLogo from '../../Assets/shopping-logo-cart-green.png'
-// import shoppingCart from '../../Assets/interface/shopping-cart.png'
-// import dropdown from '../../Assets/interface/dropdown.png'
-// import {
-//     Nav,
-//     NavBarContainer,
-//     Category,
-//     List,
-//     ListTwo,
-//     Currenc,
-//     Currency,
-//     Div,
-//     Img,
-//     Option,
-//     ProductsHeader,
-//     Select,
-//     SelectContainer
-// } from '../../Styles/NavbarStyles';
-
-// export default class Navbar extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             navItems: [],
-//             currencyItems: [],
-//             allItems: [],
-//             currency: {
-//                 'USD': ['$', ' USD'],
-//                 'Eur': ['€', ' EUR'],
-//                 'JPY': ['¥', ' JPY'],
-//             },
-//             isActive: false,
-//             navs: 'clothes'
-
-//         }
-//         this.handleCurrency = this.handleCurrency.bind(this);
-//         this.active = this.active.bind(this);
-//         this.click = this.click.bind(this);
-//     }
-//     handleCurrency = () => {
-//         this.setState({ activeCurrency: true })
-//     }
-
-//     click = (index) => {
-//         this.active(index)
-//     }
-
-//     active = index => {
-//         if (this.state.isActive === index) {
-//             return this.setState({ isActive: index })
-//         }
-//         this.setState({ isActive: index })
-//     }
-
-//     componentDidMount() {
-//         if (window.location.pathname.split('/')[2] === "clothes") {
-//             this.setState({ isActive: 1 })
-//         } else if (window.location.pathname.split('/')[2] === "tech") {
-//             this.setState({ isActive: 2 })
-//         } else
-//             this.setState({ isActive: 0 })
-//     }
-
-//     render() {
-//         return (
-//             <Nav>
-//                 <NavBarContainer>
-
-//                     <Category>
-//                         {this.props.navItems.map((item, index) =>
-//                             <div key={index}>
-//                                 {this.state.isActive === index ?
-//                                     <Link to={`/ ${item.name.toLowerCase()} `}>
-//                                         <ListTwo active onClick={() => this.click(index)}>{item.name}</ListTwo>
-//                                     </Link> :
-//                                     <Link to={`/ ${item.name.toLowerCase()} `}>
-//                                         <List onClick={() => this.click(index)}>{item.name}</List>
-//                                     </Link>
-//                                 }
-//                             </div>
-//                         )}
-//                     </Category>
-
-//                     <div>
-//                         <Img src={shoppingLogo} width="31px" height="29px" />
-//                     </div>
-
-//                     <Div>
-//                         <SelectContainer>
-//                             <Currenc onClick={this.handleCurrency}>
-//                                 <Currency className='one'>{this.state.currency.USD[0]}</Currency>
-//                                 <Img src={dropdown} width="9px" height='6px' active={this.state.activeCurrency} />
-//                             </Currenc>
-
-//                             <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
-//                                 <Option>{this.state.currency.USD}</Option>
-//                                 <Option>{this.state.currency.Eur}</Option>
-//                                 <Option>{this.state.currency.JPY}</Option>
-//                             </Select>
-
-//                         </SelectContainer>
-
-//                         <div>
-//                             <Img src={shoppingCart} width='20px' height='20px' alt='shopping cart' />
-//                         </div>
-//                     </Div>
-//                 </NavBarContainer>
+import React, { Component } from 'react'
+import styled from 'styled-components'
+import { Link } from 'react-router-dom';
 
 
-//                 {this.props.navItems.map((item, index) =>
-//                     <div key={index}>
-//                         {this.state.isActive === index && <ProductsHeader active onClick={() => this.active(index)}>{item.name}</ProductsHeader>}
-//                     </div>
-//                 )}
+import shoppingLogo from '../../Assets/shopping-logo-cart-green.png'
+import shoppingCart from '../../Assets/interface/shopping-cart.png'
+import dropdown from '../../Assets/interface/dropdown.png'
+import {
+    Nav,
+    NavBarContainer,
+    Category,
+    List,
+    ListTwo,
+    Currenc,
+    Currency,
+    Div,
+    Img,
+    Option,
+    Select,
+    SelectContainer,
+    CartItems,
+    CartIcon,
+} from '../../Styles/NavbarStyles';
+
+export default class Navbar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {}
+    }
+
+    componentDidMount() {
+        this.setState({ isActiveCurrency: 0 })
+    }
+
+    render() {
+        const { navItems, isActive, click, currencyItems, isActiveCurrency, activeCurrency, activeCurrencies, cart, toggleOverlay, currencyfunction, handleCurrency } = this.props
+        return (
+            <Nav>
+                <NavBarContainer>
+                    <Category>
+                        {navItems.map((item, index) =>
+                            <div key={index}>
+                                {isActive === index ?
+                                    <Link to={`/${item.name.toLowerCase()} `}>
+                                        <ListTwo active onClick={() => click(index)}>{item.name}</ListTwo>
+                                    </Link> :
+                                    <Link to={`/${item.name.toLowerCase()} `}>
+                                        <List onClick={() => click(index)}>{item.name}</List>
+                                    </Link>
+                                }
+                            </div>
+                        )}
+                    </Category>
+
+                    <div>
+                        <Img src={shoppingLogo} width="31px" height="29px" />
+                    </div>
+
+                    <Div>
+                        <SelectContainer>
+                            {
+                                currencyItems.map((item, index) => (
+                                    <div key={index}>
+                                        <Currenc onClick={() => handleCurrency(index)}>
+                                            {isActiveCurrency === index &&
+                                                <Currency className='one' >{item.symbol}</Currency>}
+                                        </Currenc>
+                                    </div>
+
+                                ))}
+
+                            <Select active={activeCurrency} onClick={currencyfunction}>
+                                {
+                                    currencyItems.map((item, index) => (
+                                        <div key={index} >
+                                            <Option onClick={() => activeCurrencies(index)}>{item.symbol} {item.label}</Option>
+                                        </div>
+                                    ))}
+                            </Select>
 
 
-//             </Nav>
-//         )
-//     }
-// }
+                        </SelectContainer>
+
+                        <Img src={dropdown} width="9px" height='6px' marginLeft="-15px" marginRight="30px" active={activeCurrency} />
+
+                        <CartIcon onClick={toggleOverlay} >
+                            <Img src={shoppingCart} width='20px' height='20px' alt='shopping cart' />
+                            <CartItems>{cart.length > 0 ? cart.length : 0}</CartItems>
+                        </CartIcon>
+                    </Div>
+                </NavBarContainer>
+            </Nav>
+
+        )
+    }
+}

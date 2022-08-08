@@ -3,9 +3,7 @@ import { Routes, Route, Link } from "react-router-dom"
 
 import Products from './Pages/Products';
 import SingleProduct from './Pages/SingleProduct';
-import shoppingLogo from './Assets/shopping-logo-cart-green.png'
-import shoppingCart from './Assets/interface/shopping-cart.png'
-import dropdown from './Assets/interface/dropdown.png'
+
 import {
   Nav,
   NavBarContainer,
@@ -24,6 +22,8 @@ import {
 } from './Styles/NavbarStyles';
 import CartOverlay from './components/organisms/CartOverlay';
 import withRouter from './components/molecules/withRouter';
+import CartPage from './Pages/CartPage';
+import Navbar from './components/organisms/Navbar';
 
 class App extends Component {
   constructor(props) {
@@ -34,14 +34,15 @@ class App extends Component {
       allItems: [],
       isActive: false,
       isActiveCurrency: 0,
+      isCurrennt: JSON.parse(localStorage.getItem('currency')),
       activeCurrency: false,
       cart: JSON.parse(localStorage.getItem('ScandiwebCart')).length < 1 ? [] : JSON.parse(localStorage.getItem('ScandiwebCart')),
       cartOverlay: false,
     }
-    this.handleCurrency = this.handleCurrency.bind(this);
-    this.active = this.active.bind(this);
-    this.activeCurrency = this.activeCurrency.bind(this);
-    this.click = this.click.bind(this);
+  }
+  removeOverlay = () => {
+    this.setState({ cartOverlay: false })
+    window.scrollTo(0, 0)
   }
   handleCurrency = (index) => {
     this.setState({ activeCurrency: true })
@@ -50,6 +51,19 @@ class App extends Component {
 
   click = (index) => {
     this.active(index)
+  }
+  updateCart = (name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount) => {
+    if (amount === 0) {
+      const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
+      this.setState({ cart: ([...cartItems, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount }]) })
+      let newset = cartItems.filter((pep) => pep.name !== name)
+      this.setState({ cart: ([...newset]) })
+    } else {
+      const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
+      this.setState({ cart: ([...cartItems, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount }]) })
+      let newset = cartItems.filter((pep) => pep.name !== name)
+      this.setState({ cart: ([...newset, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount }]) })
+    }
   }
 
   active = index => {
@@ -65,7 +79,12 @@ class App extends Component {
     }
     this.setState({ isActiveCurrency: index })
   }
-
+  currencyfunction = () => {
+    this.setState({ activeCurrency: false })
+  }
+  toggleOverlay = () => {
+    this.setState({ cartOverlay: !this.state.cartOverlay })
+  }
   componentDidMount() {
     if (window.location.pathname.split('/')[2] === "clothes") {
       this.setState({ isActive: 1 })
@@ -74,8 +93,17 @@ class App extends Component {
     } else
       this.setState({ isActive: 0 })
 
-    this.setState({ isActiveCurrency: 0 })
-
+    if (JSON.parse(localStorage.getItem('currency')) === 0) {
+      this.setState({ isActiveCurrency: 0 })
+    } else if (JSON.parse(localStorage.getItem('currency')) === 1) {
+      this.setState({ isActiveCurrency: 1 })
+    } else if (JSON.parse(localStorage.getItem('currency')) === 2) {
+      this.setState({ isActiveCurrency: 2 })
+    } else if (JSON.parse(localStorage.getItem('currency')) === 3) {
+      this.setState({ isActiveCurrency: 3 })
+    } else if (JSON.parse(localStorage.getItem('currency')) === 4) {
+      this.setState({ isActiveCurrency: 4 })
+    }
 
     fetch('http://localhost:4000/', {
       method: 'POST',
@@ -129,82 +157,31 @@ class App extends Component {
       })
       .then((data) => this.setState({ allItems: data.data.category.products, navItems: data.data.categories, currencyItems: data.data.currencies }))
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProp, prevState, snapshot) {
+    localStorage.setItem("currency", JSON.stringify(this.state.isActiveCurrency))
   }
   render() {
-    const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-
     localStorage.setItem('ScandiwebCart', JSON.stringify(this.state.cart))
-    const updateCart = (name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes) => {
-      const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-      this.setState({ cart: ([...cartItems, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes }]) })
-      let newset = cartItems.filter((pep) => pep.name !== name)
-      this.setState({ cart: ([...newset, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes }]) })
-      alert(`${name} has been added to your cart`)
-      console.log(this.state.cart);
-    }
-
     return (
       <div>
-        <Nav>
-          <NavBarContainer>
-            <Category>
-              {this.state.navItems.map((item, index) =>
-                <div key={index}>
-                  {this.state.isActive === index ?
-                    <Link to={`/${item.name.toLowerCase()} `}>
-                      <ListTwo active onClick={() => this.click(index)}>{item.name}</ListTwo>
-                    </Link> :
-                    <Link to={`/${item.name.toLowerCase()} `}>
-                      <List onClick={() => this.click(index)}>{item.name}</List>
-                    </Link>
-                  }
-                </div>
-              )}
-            </Category>
+        <Navbar
+          navItems={this.state.navItems}
+          currencyItems={this.state.currencyItems}
+          isActive={this.state.isActive}
+          isActiveCurrency={this.state.isActiveCurrency}
+          cartOverlay={this.state.cartOverlay}
+          cart={this.state.cart}
+          click={this.click}
+          activeCurrency={this.state.activeCurrency}
+          activeCurrencies={this.activeCurrency}
+          handleCurrency={this.handleCurrency}
+          toggleOverlay={this.toggleOverlay}
+          currencyfunction={this.currencyfunction}></Navbar>
 
-            <div>
-              <Img src={shoppingLogo} width="31px" height="29px" />
-            </div>
-
-            <Div>
-              <SelectContainer>
-                {
-                  this.state.currencyItems.map((item, index) => (
-                    <div key={index}>
-                      <Currenc onClick={() => this.handleCurrency(index)}>
-                        {this.state.isActiveCurrency === index &&
-                          <Currency className='one' >{item.symbol}</Currency>}
-                      </Currenc>
-                    </div>
-
-                  ))}
-
-                <Select active={this.state.activeCurrency} onClick={() => this.setState({ activeCurrency: false })}>
-                  {
-                    this.state.currencyItems.map((item, index) => (
-                      <div key={index} >
-                        <Option onClick={() => this.activeCurrency(index)}>{item.symbol} {item.label}</Option>
-                      </div>
-                    ))}
-                </Select>
-
-
-              </SelectContainer>
-
-              <Img src={dropdown} width="9px" height='6px' marginLeft="-15px" marginRight="30px" active={this.state.activeCurrency} />
-
-              <CartIcon onClick={() => this.setState({ cartOverlay: !this.state.cartOverlay })}>
-                <Img src={shoppingCart} width='20px' height='20px' alt='shopping cart' />
-                <CartItems>{cartItems.length > 0 ? cartItems.length : 0}</CartItems>
-              </CartIcon>
-            </Div>
-          </NavBarContainer>
-        </Nav>
 
         {
           this.state.cartOverlay &&
-          <CartOverlay />
+          <CartOverlay removeOverlay={this.removeOverlay} updateCart={this.updateCart} />
         }
         <Routes>
           <Route basename={'/'} path='/'
@@ -215,7 +192,7 @@ class App extends Component {
               isActive={this.state.isActive}
               isActiveCurrency={this.state.isActiveCurrency}
               cartOverlay={this.state.cartOverlay}
-              updateCart={updateCart}
+              updateCart={this.updateCart}
             />}>
 
             <Route path='/:all' element={<Products />} />
@@ -224,8 +201,8 @@ class App extends Component {
           </Route>
 
 
-          <Route path='/:category/:productname' element={<SingleProduct cartOverlay={this.state.cartOverlay} isActiveCurrency={this.state.isActiveCurrency} updateCart={updateCart}
-          />} />
+          <Route path='/:category/:productname' element={<SingleProduct cartOverlay={this.state.cartOverlay} isActiveCurrency={this.state.isActiveCurrency} updateCart={this.updateCart} />} />
+          <Route path='/cartpage' element={<CartPage cartOverlay={this.state.cartOverlay} isActiveCurrency={this.state.isActiveCurrency} updateCart={this.updateCart} />} />
         </Routes>
       </div>
     );

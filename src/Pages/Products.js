@@ -23,172 +23,232 @@ export default class Products extends Component {
         this.state = {
         }
     }
+    componentDidMount() {
+    }
     render() {
         const Items = JSON.parse(localStorage.getItem('dataItems'))
-        const { active, navItems, isActive, isActiveCurrency, cartOverlay, product, selectedOption1, selectedOption2, selectedOption3 } = this.props
+        const { active, navItems, isActive, isActiveCurrency, cartOverlay, allItems } = this.props
         return (
-            <ProductsContainer onClick={() => this.setState({ cartOverlay: false })} cartOverlay={cartOverlay}>
 
-                {navItems.map((item, index) =>
-                    <div key={index}>
-                        {isActive === index && <ProductsHeader active onClick={() => active(index)}>{item.name}</ProductsHeader>}
-                    </div>
-                )}
-
-                <ProductWrapper>
-                    {
-                        isActive === 0 &&
-                        Items.products.map((item) =>
-                            item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                <ProductCard opacity="0.5">
-
-                                    <ProductCardOverlauy>
-                                        <ProductInStock>
-                                            OUT OF STOCK
-                                        </ProductInStock>
-                                    </ProductCardOverlauy>
-
-                                    <ProductCardImage src={item.gallery[0]}></ProductCardImage>
-
-                                    <ProductCardContent>
-                                        {item.name}
-                                    </ProductCardContent>
-
-                                    <ProductCardContentTwo>
-                                        {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                    </ProductCardContentTwo>
-
-
-                                </ProductCard>
-                            </Link>) : (<ProductCard>
-                                <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                    <div>
-                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
-
-                                        <ProductCardContent>
-                                            {item.name}
-                                        </ProductCardContent>
-
-                                        <ProductCardContentTwo>
-                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                        </ProductCardContentTwo>
-
-
-
-                                    </div>
-                                </Link>
-
-                                <CartAddOverlay>
-                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(product.name, product.brand, product.gallery[0], product.prices[isActiveCurrency].currency.symbol, product.prices[isActiveCurrency].amount, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3, product.attributes)} className="onHover"></CartAdd>
-                                </CartAddOverlay>
-                            </ProductCard>)
-                        )
-                    }
-                </ProductWrapper>
-
+            <div>
                 {
-                    isActive === 1 &&
-                    <ProductWrapper>
-                        {
-                            Items.products.filter(x => x.category === 'clothes').map((item) =>
-                                item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                    <ProductCard opacity="0.5">
+                    allItems.length === 0 ?
+                        (<div>
+                            NO ITEMS IN THE STORE
+                        </div>)
+                        :
+                        (<ProductsContainer cartOverlay={cartOverlay} style={cartOverlay === true ? { position: 'fixed' } : {}} >
 
-                                        <ProductCardOverlauy>
-                                            <ProductInStock>
-                                                OUT OF STOCK
-                                            </ProductInStock>
+                            {navItems.map((item, index) =>
+                                <div key={index}>
+                                    {isActive === index && <ProductsHeader active onClick={() => active(index)}>{item.name}</ProductsHeader>}
+                                </div>
+                            )}
 
-                                        </ProductCardOverlauy>
-                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+                            <ProductWrapper>
+                                {
+                                    isActive === 0 &&
+                                    allItems.map((item) =>
+                                        item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                            <ProductCard opacity="0.5" className='one'>
 
-                                        <ProductCardContent>
-                                            {item.name}
-                                        </ProductCardContent>
+                                                <ProductCardOverlauy>
+                                                    <ProductInStock>
+                                                        OUT OF STOCK
+                                                    </ProductInStock>
+                                                </ProductCardOverlauy>
 
-                                        <ProductCardContentTwo>
-                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                        </ProductCardContentTwo>
+                                                <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
-                                    </ProductCard>
-                                </Link>) : (<ProductCard>
-                                    <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                        <div>
-                                            <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+                                                <ProductCardContent>
+                                                    {item.name}
+                                                </ProductCardContent>
 
-                                            <ProductCardContent>
-                                                {item.name}
-                                            </ProductCardContent>
-
-                                            <ProductCardContentTwo>
-                                                {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                            </ProductCardContentTwo>
-
+                                                <ProductCardContentTwo>
+                                                    {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                                </ProductCardContentTwo>
 
 
-                                        </div>
-                                    </Link>
+                                            </ProductCard>
+                                        </Link>) : (<ProductCard key={item.id}>
+                                            <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)}>
+                                                <div>
+                                                    <ProductCardImage src={item.gallery[0]}></ProductCardImage>
 
-                                    <CartAddOverlay>
-                                        <CartAdd src={CircletIcon} className="onHover"></CartAdd>
-                                    </CartAddOverlay>
-                                </ProductCard>)
-                            )
-                        }
-                    </ProductWrapper>
+                                                    <ProductCardContent>
+                                                        {item.name}
+                                                    </ProductCardContent>
+
+                                                    <ProductCardContentTwo>
+                                                        {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                                    </ProductCardContentTwo>
+
+                                                </div>
+                                            </Link>
+                                            {
+                                                item.attributes.length === 0 && <CartAddOverlay>
+                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, "", "", "", item.attributes)} className="onHover"></CartAdd>
+                                                </CartAddOverlay>
+                                            }
+
+                                            {
+                                                item.attributes.length === 1 && <CartAddOverlay>
+                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes)} className="onHover"></CartAdd>
+                                                </CartAddOverlay>
+                                            }
+                                            {
+                                                item.attributes.length === 2 && <CartAddOverlay>
+                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes)} className="onHover"></CartAdd>
+                                                </CartAddOverlay>
+                                            }
+                                            {
+                                                item.attributes.length === 3 && <CartAddOverlay>
+                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes)} className="onHover"></CartAdd>
+                                                </CartAddOverlay>
+                                            }
+                                        </ProductCard>)
+                                    )
+                                }
+                            </ProductWrapper>
+
+                            {
+                                isActive === 1 &&
+                                <ProductWrapper>
+                                    {
+                                        Items.products.filter(x => x.category === 'clothes').map((item) =>
+                                            item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                                <ProductCard opacity="0.5">
+
+                                                    <ProductCardOverlauy>
+                                                        <ProductInStock>
+                                                            OUT OF STOCK
+                                                        </ProductInStock>
+
+                                                    </ProductCardOverlauy>
+                                                    <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                                    <ProductCardContent>
+                                                        {item.name}
+                                                    </ProductCardContent>
+
+                                                    <ProductCardContentTwo>
+                                                        {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                                    </ProductCardContentTwo>
+
+                                                </ProductCard>
+                                            </Link>) : (<ProductCard key={item.id}>
+                                                <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)}>
+                                                    <div>
+                                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                                        <ProductCardContent>
+                                                            {item.name}
+                                                        </ProductCardContent>
+
+                                                        <ProductCardContentTwo>
+                                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                                        </ProductCardContentTwo>
+
+
+
+                                                    </div>
+                                                </Link>
+                                                {
+                                                    item.attributes.length === 0 && <CartAddOverlay>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, "", "", "", item.attributes)} className="onHover"></CartAdd>
+                                                    </CartAddOverlay>
+                                                }
+                                                {
+                                                    item.attributes.length === 1 && <CartAddOverlay>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes)} className="onHover"></CartAdd>
+                                                    </CartAddOverlay>
+                                                }
+                                                {
+                                                    item.attributes.length === 2 && <CartAddOverlay>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes)} className="onHover"></CartAdd>
+                                                    </CartAddOverlay>
+                                                }
+                                                {
+                                                    item.attributes.length === 3 && <CartAddOverlay>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes)} className="onHover"></CartAdd>
+                                                    </CartAddOverlay>
+                                                }
+                                            </ProductCard>)
+                                        )
+                                    }
+                                </ProductWrapper>
+                            }
+                            {
+                                isActive === 2 &&
+                                <ProductWrapper>
+                                    {
+                                        Items.products.filter(x => x.category === 'tech').map((item) =>
+                                            item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
+                                                <ProductCard opacity="0.5">
+
+                                                    <ProductCardOverlauy>
+                                                        <ProductInStock>
+                                                            OUT OF STOCK
+                                                        </ProductInStock>
+                                                    </ProductCardOverlauy>
+
+                                                    <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                                    <ProductCardContent>
+                                                        {item.name}
+                                                    </ProductCardContent>
+
+                                                    <ProductCardContentTwo>
+                                                        {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                                    </ProductCardContentTwo>
+
+                                                </ProductCard>
+                                            </Link>) : (<ProductCard key={item.id}>
+                                                <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} >
+                                                    <div>
+                                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
+
+                                                        <ProductCardContent>
+                                                            {item.name}
+                                                        </ProductCardContent>
+
+                                                        <ProductCardContentTwo>
+                                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
+                                                        </ProductCardContentTwo>
+
+
+
+                                                    </div>
+                                                </Link>
+                                                {
+                                                    item.attributes.length === 0 && <CartAddOverlay>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, "", "", "", item.attributes)} className="onHover"></CartAdd>
+                                                    </CartAddOverlay>
+                                                }
+
+                                                {
+                                                    item.attributes.length === 1 && <CartAddOverlay>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes)} className="onHover"></CartAdd>
+                                                    </CartAddOverlay>
+                                                }
+                                                {
+                                                    item.attributes.length === 2 && <CartAddOverlay>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes)} className="onHover"></CartAdd>
+                                                    </CartAddOverlay>
+                                                }
+                                                {
+                                                    item.attributes.length === 3 && <CartAddOverlay>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes)} className="onHover"></CartAdd>
+                                                    </CartAddOverlay>
+                                                }
+                                            </ProductCard>)
+                                        )
+                                    }
+                                </ProductWrapper>
+                            }
+                        </ProductsContainer >)
                 }
-                {
-                    isActive === 2 &&
-                    <ProductWrapper>
-                        {
-                            Items.products.filter(x => x.category === 'tech').map((item) =>
-                                item.inStock === false ? (<Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                    <ProductCard opacity="0.5">
-
-                                        <ProductCardOverlauy>
-                                            <ProductInStock>
-                                                OUT OF STOCK
-                                            </ProductInStock>
-                                        </ProductCardOverlauy>
-
-                                        <ProductCardImage src={item.gallery[0]}></ProductCardImage>
-
-                                        <ProductCardContent>
-                                            {item.name}
-                                        </ProductCardContent>
-
-                                        <ProductCardContentTwo>
-                                            {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                        </ProductCardContentTwo>
-
-                                    </ProductCard>
-                                </Link>) : (<ProductCard>
-                                    <Link to={`/${item.category}/${item.id}`} onClick={() => window.scrollTo(0, 0)} key={item.id}>
-                                        <div>
-                                            <ProductCardImage src={item.gallery[0]}></ProductCardImage>
-
-                                            <ProductCardContent>
-                                                {item.name}
-                                            </ProductCardContent>
-
-                                            <ProductCardContentTwo>
-                                                {item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}
-                                            </ProductCardContentTwo>
-
-
-
-                                        </div>
-                                    </Link>
-
-                                    <CartAddOverlay>
-                                        <CartAdd src={CircletIcon} className="onHover"></CartAdd>
-                                    </CartAddOverlay>
-                                </ProductCard>)
-                            )
-                        }
-                    </ProductWrapper>
-                }
-            </ProductsContainer >
+            </div>
         )
     }
 }

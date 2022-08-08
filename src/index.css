@@ -10,9 +10,11 @@
   --c-text: #1D1F22;
   --c-text-two: #8D8F9A;
   --c-bg:#EEEEEE;
+  --c-text-three: #E5E5E5;
 }
 body {
 font-family: 'Raleway', sans-serif;
+margin: 0 0 100px 0;
 }
 a {
   text-decoration: none;

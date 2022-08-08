@@ -79,6 +79,7 @@ justify-content:space-between;
 align-items:center;
 margin-right:22px;
 cursor:pointer;
+z-index:6;
 `
 export const Select = styled.ul`
 z-index:1;

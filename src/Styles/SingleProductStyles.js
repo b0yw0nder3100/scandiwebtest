@@ -77,7 +77,7 @@ export const CheckmarkWrapper = styled.span`
 cursor: pointer;
    ${Input}:checked + && {
     border: ${props => props.bg ? '2px solid var(--c-primary)' : 'none'};
-    padding: ${props => props.bg ? '6px 2px 6px 1px' : 'none'};
+    padding: ${props => props.bg ? '6px 1.5px 6px 1px' : 'none'};
   }
 
 }`
