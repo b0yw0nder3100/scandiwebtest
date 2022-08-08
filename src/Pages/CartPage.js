@@ -23,32 +23,11 @@ export default class CartPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 1
         }
-        this.Increase = this.Increase.bind(this)
-        this.Decrease = this.Decrease.bind(this)
-    }
-    Increase = () => {
-        this.setState({
-            count: this.state.count + 1
-        })
-    }
-    Decrease = () => {
-        this.setState({
-            count: this.state.count - 1
-        })
-    }
-    active = index => {
-        if (this.state.isActive === index) {
-            return this.setState({ isActive: index })
-        }
-        this.setState({ isActive: index })
-    }
-    componentDidMount() {
     }
     render() {
         const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-        const { updateCart } = this.props
+        const { updateCart, cartOverlay } = this.props
         return (
             <CartOverlayWrapper>
                 <CartOverlayContainer>

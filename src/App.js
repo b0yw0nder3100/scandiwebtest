@@ -3,23 +3,6 @@ import { Routes, Route, Link } from "react-router-dom"
 
 import Products from './Pages/Products';
 import SingleProduct from './Pages/SingleProduct';
-
-import {
-  Nav,
-  NavBarContainer,
-  Category,
-  List,
-  ListTwo,
-  Currenc,
-  Currency,
-  Div,
-  Img,
-  Option,
-  Select,
-  SelectContainer,
-  CartItems,
-  CartIcon,
-} from './Styles/NavbarStyles';
 import CartOverlay from './components/organisms/CartOverlay';
 import withRouter from './components/molecules/withRouter';
 import CartPage from './Pages/CartPage';
@@ -33,6 +16,7 @@ class App extends Component {
       currencyItems: [],
       allItems: [],
       isActive: false,
+      itemCurrent: "",
       isActiveCurrency: 0,
       isCurrennt: JSON.parse(localStorage.getItem('currency')),
       activeCurrency: false,
@@ -65,14 +49,12 @@ class App extends Component {
       this.setState({ cart: ([...newset, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount }]) })
     }
   }
-
   active = index => {
     if (this.state.isActive === index) {
       return this.setState({ isActive: index })
     }
     this.setState({ isActive: index })
   }
-
   activeCurrency = index => {
     if (this.state.isActiveCurrency === index) {
       return this.setState({ isActiveCurrency: index })
@@ -104,6 +86,8 @@ class App extends Component {
     } else if (JSON.parse(localStorage.getItem('currency')) === 4) {
       this.setState({ isActiveCurrency: 4 })
     }
+
+
 
     fetch('http://localhost:4000/', {
       method: 'POST',
@@ -156,12 +140,16 @@ class App extends Component {
         return data
       })
       .then((data) => this.setState({ allItems: data.data.category.products, navItems: data.data.categories, currencyItems: data.data.currencies }))
+
+    this.setState({ itemCurrent: this.state.allItems })
   }
-  componentDidUpdate(prevProp, prevState, snapshot) {
+  componentDidUpdate() {
     localStorage.setItem("currency", JSON.stringify(this.state.isActiveCurrency))
   }
   render() {
     localStorage.setItem('ScandiwebCart', JSON.stringify(this.state.cart))
+    console.log(this);
+
     return (
       <div>
         <Navbar
@@ -181,7 +169,7 @@ class App extends Component {
 
         {
           this.state.cartOverlay &&
-          <CartOverlay removeOverlay={this.removeOverlay} updateCart={this.updateCart} />
+          <CartOverlay removeOverlay={this.removeOverlay} updateCart={this.updateCart} isActiveCurrency={this.state.isActiveCurrency} />
         }
         <Routes>
           <Route basename={'/'} path='/'
