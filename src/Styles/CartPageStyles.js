@@ -116,7 +116,7 @@ padding:32px 0 20px 0;
 `
 export const TotalWrapper = styled.div`
 display:flex;
-width:17%;
+width:250px;
 justify-content:space-between;
 padding:0 0 10px;
 text-align: left;

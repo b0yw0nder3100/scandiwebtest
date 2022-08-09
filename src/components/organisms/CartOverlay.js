@@ -23,7 +23,8 @@ export default class CartOverlay extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 1
+            count: 1,
+            symbol: '',
         }
         this.Increase = this.Increase.bind(this)
         this.Decrease = this.Decrease.bind(this)
@@ -45,11 +46,24 @@ export default class CartOverlay extends Component {
         this.setState({ isActive: index })
     }
     componentDidMount() {
-
+        this.setState({ symbol: this.props.allItems.find })
     }
     render() {
         const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-        const { removeOverlay, updateCart } = this.props
+
+        // if (this.props.allItems.map(item => item.name.includes(cartItems.map(items => items.name)))) {
+        //     console.log(this.props.allItems.map(item => item.prices))
+        // } else {
+        //     console.log(false)
+        // }
+
+
+        console.log(cartItems.find((x) => x.name === this.props.allItems.map(i => i.name)));
+
+
+        const { removeOverlay, updateCart, isActiveCurrency, allItems } = this.props
+        //console.log(allItems.map(item => item.name.includes('Jacket')))
+        //console.log(cartItems.map(i => i));
         return (
             <CartOverlayWrapper>
                 <CartOverlayContainer>
@@ -60,7 +74,9 @@ export default class CartOverlay extends Component {
                                 <div>
                                     <Text fontSize='16px' lineHeight="160%" fontWeight="300">{item.brand}</Text>
                                     <Text fontSize='16px' lineHeight="160%" fontWeight="300">{item.name}</Text>
-                                    <Text fontSize='16px' lineHeight="160%" fontWeight="500">{item.currencySymbol} {item.price}</Text>
+
+                                    <Text fontSize='16px' lineHeight="160%" fontWeight="500">{item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}</Text>
+
                                     {
                                         item.attributes.length === 0 ? (
                                             <div>
@@ -138,7 +154,7 @@ export default class CartOverlay extends Component {
                                                                                 </Container>
                                                                             )) : (product.items.map((items, index) =>
                                                                                 <Container className="container" key={index}>
-                                                                                    <Input type="radio" name={items.id} value={items.value} checked={item.attribute3 === items.value} readOnly />
+                                                                                    <Input type="radio" name={item.value + item.id} value={items.value} checked={item.attribute3 === items.value} readOnly />
                                                                                     <Checkmark className="checkmark" border data={items.value}>{items.value}</Checkmark>
                                                                                 </Container>
                                                                             ))
@@ -157,9 +173,9 @@ export default class CartOverlay extends Component {
 
                                 <Divr>
                                     <Divc>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.currencySymbol, item.price, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1)}>+</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1)}>+</Span>
                                         <Span className="amount" noborder>{item.amount}</Span>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.currencySymbol, item.price, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1)}>-</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1)}>-</Span>
                                     </Divc>
 
                                     <ProductCardImage width='101px' height='190px' src={item.image}></ProductCardImage>
@@ -169,7 +185,7 @@ export default class CartOverlay extends Component {
 
                     <TotalWrapper>
                         <Text fontSize='16px' lineHeight="18px" fontWeight="500" >Total</Text>
-                        <Text fontSize='16px' lineHeight="18px" fontWeight="500" >{cartItems.map((i, j) => j == 0 && i.currencySymbol)} {(cartItems.reduce((a, c) => a + c.price * c.amount, 0).toFixed(2))}</Text>
+                        <Text fontSize='16px' lineHeight="18px" fontWeight="500" >{cartItems.map((symbol, index) => index === 0 && symbol.prices[isActiveCurrency].currency.symbol)} {(cartItems.reduce((a, c) => a + c.prices[isActiveCurrency].amount * c.amount, 0).toFixed(2))}</Text>
                     </TotalWrapper>
                     <ButtonWrapper>
                         <Link to='/cartpage'>

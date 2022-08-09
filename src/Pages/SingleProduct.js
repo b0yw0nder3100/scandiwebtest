@@ -191,7 +191,7 @@ export class SingleProduct extends Component {
 
                         {
                             product.inStock === false ? (<AddToCartBtn disabled opacity="0.5" >Add to Cart</AddToCartBtn>) :
-                                (<AddToCartBtn cursor onClick={() => this.props.updateCart(product.name, product.brand, product.gallery[0], product.prices[isActiveCurrency].currency.symbol, product.prices[isActiveCurrency].amount, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3, product.attributes, this.state.amount)}>Add to Cart</AddToCartBtn>)
+                                (<AddToCartBtn cursor onClick={() => this.props.updateCart(product.name, product.brand, product.gallery[0], product.prices, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3, product.attributes, this.state.amount)}>Add to Cart</AddToCartBtn>)
                         }
 
                         <Text padding="56px 0 0 0" fontSize='16px' lineHeight="160%" fontWeight="400" dangerouslySetInnerHTML={{ __html: product.description }} />

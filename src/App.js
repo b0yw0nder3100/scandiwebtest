@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Routes, Route, Link } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 
 import Products from './Pages/Products';
 import SingleProduct from './Pages/SingleProduct';
@@ -36,17 +36,17 @@ class App extends Component {
   click = (index) => {
     this.active(index)
   }
-  updateCart = (name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount) => {
+  updateCart = (name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount) => {
     if (amount === 0) {
       const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-      this.setState({ cart: ([...cartItems, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount }]) })
+      this.setState({ cart: ([...cartItems, { name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
       let newset = cartItems.filter((pep) => pep.name !== name)
       this.setState({ cart: ([...newset]) })
     } else {
       const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-      this.setState({ cart: ([...cartItems, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount }]) })
+      this.setState({ cart: ([...cartItems, { name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
       let newset = cartItems.filter((pep) => pep.name !== name)
-      this.setState({ cart: ([...newset, { name, brand, image, currencySymbol, price, attribute1, attribute2, attribute3, attributes, amount }]) })
+      this.setState({ cart: ([...newset, { name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
     }
   }
   active = index => {
@@ -148,7 +148,6 @@ class App extends Component {
   }
   render() {
     localStorage.setItem('ScandiwebCart', JSON.stringify(this.state.cart))
-    console.log(this);
 
     return (
       <div>
@@ -169,7 +168,7 @@ class App extends Component {
 
         {
           this.state.cartOverlay &&
-          <CartOverlay removeOverlay={this.removeOverlay} updateCart={this.updateCart} isActiveCurrency={this.state.isActiveCurrency} />
+          <CartOverlay allItems={this.state.allItems} removeOverlay={this.removeOverlay} updateCart={this.updateCart} isActiveCurrency={this.state.isActiveCurrency} />
         }
         <Routes>
           <Route basename={'/'} path='/'

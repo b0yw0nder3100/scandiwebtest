@@ -27,7 +27,7 @@ export default class CartPage extends Component {
     }
     render() {
         const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-        const { updateCart, cartOverlay } = this.props
+        const { updateCart, isActiveCurrency } = this.props
         return (
             <CartOverlayWrapper>
                 <CartOverlayContainer>
@@ -38,7 +38,7 @@ export default class CartPage extends Component {
                                 <div>
                                     <Text fontSize='16px' lineHeight="160%" fontWeight="700">{item.brand}</Text>
                                     <Text fontSize='16px' lineHeight="160%" fontWeight="300">{item.name}</Text>
-                                    <Text fontSize='16px' lineHeight="160%" fontWeight="500">{item.currencySymbol} {item.price}</Text>
+                                    <Text fontSize='16px' lineHeight="160%" fontWeight="500">{item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}</Text>
                                     {
                                         item.attributes.length === 0 ? (
                                             <div>
@@ -135,9 +135,9 @@ export default class CartPage extends Component {
 
                                 <Divr>
                                     <Divc>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.currencySymbol, item.price, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1)}>+</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1)}>+</Span>
                                         <Span className="amount" noborder>{item.amount}</Span>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.currencySymbol, item.price, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1)}>-</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1)}>-</Span>
                                     </Divc>
 
                                     <ProductCardImage width='200px' height='288px' src={item.image}></ProductCardImage>
@@ -148,7 +148,7 @@ export default class CartPage extends Component {
                     <TotalContainer>
                         <TotalWrapper>
                             <Text fontSize='24px' lineHeight="24px" fontWeight="500" >Tax 21%:</Text>
-                            <Text fontSize='24px' lineHeight="24px" fontWeight="700" >{cartItems.map((i, j) => j == 0 && i.currencySymbol)}{(cartItems.reduce((a, c) => a + c.price * c.amount, 0) * 0.21).toFixed(2)}</Text>
+                            <Text fontSize='24px' lineHeight="24px" fontWeight="700" >{cartItems.map((symbol, index) => index === 0 && symbol.prices[isActiveCurrency].currency.symbol)} {((cartItems.reduce((a, c) => a + c.prices[isActiveCurrency].amount * c.amount, 0) * 0.21).toFixed(2))}</Text>
                         </TotalWrapper>
                         <TotalWrapper>
                             <Text fontSize='24px' lineHeight="24px" fontWeight="500" >Quantity:</Text>
@@ -156,7 +156,7 @@ export default class CartPage extends Component {
                         </TotalWrapper>
                         <TotalWrapper>
                             <Text fontSize='24px' lineHeight="24px" fontWeight="500" >Total:</Text>
-                            <Text fontSize='24px' lineHeight="24px" fontWeight="700" >{cartItems.map((i, j) => j == 0 && i.currencySymbol)}{(cartItems.reduce((a, c) => a + c.price * c.amount, 0)).toFixed(2)}</Text>
+                            <Text fontSize='24px' lineHeight="24px" fontWeight="700" >{cartItems.map((symbol, index) => index === 0 && symbol.prices[isActiveCurrency].currency.symbol)} {(cartItems.reduce((a, c) => a + c.prices[isActiveCurrency].amount * c.amount, 0).toFixed(2))}</Text>
                         </TotalWrapper>
                     </TotalContainer>
 

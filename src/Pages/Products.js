@@ -21,6 +21,7 @@ export default class Products extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            amount: 1
         }
     }
     componentDidMount() {
@@ -33,9 +34,9 @@ export default class Products extends Component {
             <div>
                 {
                     allItems.length === 0 ?
-                        (<div>
+                        (<ProductsContainer>
                             NO ITEMS IN THE STORE
-                        </div>)
+                        </ProductsContainer>)
                         :
                         (<ProductsContainer cartOverlay={cartOverlay} style={cartOverlay === true ? { position: 'fixed' } : {}} >
 
@@ -87,23 +88,23 @@ export default class Products extends Component {
                                             </Link>
                                             {
                                                 item.attributes.length === 0 && <CartAddOverlay>
-                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, "", "", "", item.attributes)} className="onHover"></CartAdd>
+                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, "", "", "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                 </CartAddOverlay>
                                             }
 
                                             {
                                                 item.attributes.length === 1 && <CartAddOverlay>
-                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes)} className="onHover"></CartAdd>
+                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                 </CartAddOverlay>
                                             }
                                             {
                                                 item.attributes.length === 2 && <CartAddOverlay>
-                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes)} className="onHover"></CartAdd>
+                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                 </CartAddOverlay>
                                             }
                                             {
                                                 item.attributes.length === 3 && <CartAddOverlay>
-                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes)} className="onHover"></CartAdd>
+                                                    <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                 </CartAddOverlay>
                                             }
                                         </ProductCard>)
@@ -155,22 +156,22 @@ export default class Products extends Component {
                                                 </Link>
                                                 {
                                                     item.attributes.length === 0 && <CartAddOverlay>
-                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, "", "", "", item.attributes)} className="onHover"></CartAdd>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, "", "", "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                     </CartAddOverlay>
                                                 }
                                                 {
                                                     item.attributes.length === 1 && <CartAddOverlay>
-                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes)} className="onHover"></CartAdd>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                     </CartAddOverlay>
                                                 }
                                                 {
                                                     item.attributes.length === 2 && <CartAddOverlay>
-                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes)} className="onHover"></CartAdd>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                     </CartAddOverlay>
                                                 }
                                                 {
                                                     item.attributes.length === 3 && <CartAddOverlay>
-                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes)} className="onHover"></CartAdd>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                     </CartAddOverlay>
                                                 }
                                             </ProductCard>)
@@ -222,23 +223,23 @@ export default class Products extends Component {
                                                 </Link>
                                                 {
                                                     item.attributes.length === 0 && <CartAddOverlay>
-                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, "", "", "", item.attributes)} className="onHover"></CartAdd>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, "", "", "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                     </CartAddOverlay>
                                                 }
 
                                                 {
                                                     item.attributes.length === 1 && <CartAddOverlay>
-                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes)} className="onHover"></CartAdd>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, "", "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                     </CartAddOverlay>
                                                 }
                                                 {
                                                     item.attributes.length === 2 && <CartAddOverlay>
-                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes)} className="onHover"></CartAdd>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, "", item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                     </CartAddOverlay>
                                                 }
                                                 {
                                                     item.attributes.length === 3 && <CartAddOverlay>
-                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices[isActiveCurrency].currency.symbol, item.prices[isActiveCurrency].amount, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes)} className="onHover"></CartAdd>
+                                                        <CartAdd src={CircletIcon} onClick={() => this.props.updateCart(item.name, item.brand, item.gallery[0], item.prices, item.attributes.find((i, j) => j === 0 ? i : undefined).items.find((k, l) => l === 0 && k.id).value, item.attributes.find((i, j) => j === 1 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes.find((i, j) => j === 2 ? i : undefined).items.find((k, l) => l === 0 && k.id).id, item.attributes, this.state.amount)} className="onHover"></CartAdd>
                                                     </CartAddOverlay>
                                                 }
                                             </ProductCard>)
