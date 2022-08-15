@@ -80,7 +80,7 @@ export const CheckmarkWrapper = styled.span`
 }`
 export const Checkmark = styled.span`
   position: relative;
-  padding: ${props => props.border ? '5px 8px' : '4px 12px'};;
+  padding: ${props => props.border ? '7px 15px' : '4px 12px'};;
   top: 0;
   left: 0;
 font-weight: 400;
@@ -120,4 +120,20 @@ width:250px;
 justify-content:space-between;
 padding:0 0 10px;
 text-align: left;
+`
+export const ImgContainer = styled.div`
+position:absolute;
+background: rgba(0, 0, 0, 0.73);
+padding:3px;
+display:flex;
+justify-content: space-between;
+bottom:30px;
+right:30px;
+&:nth-child(2) {
+  bottom:30px;
+right:52px;
+}
+`
+export const ImgWrapper = styled.div`
+position:relative;
 `

@@ -36,17 +36,22 @@ class App extends Component {
   click = (index) => {
     this.active(index)
   }
-  updateCart = (name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount) => {
+  updateCart = (id, name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount) => {
     if (amount === 0) {
       const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-      this.setState({ cart: ([...cartItems, { name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
+      cartItems.forEach((item, i) => {
+        item.id = i + 1
+      })
+      console.log(cartItems)
+
+      this.setState({ cart: ([...cartItems, { id, name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
       let newset = cartItems.filter((pep) => pep.name !== name)
       this.setState({ cart: ([...newset]) })
     } else {
       const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-      this.setState({ cart: ([...cartItems, { name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
+      this.setState({ cart: ([...cartItems, { id, name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
       let newset = cartItems.filter((pep) => pep.name !== name)
-      this.setState({ cart: ([...newset, { name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
+      this.setState({ cart: ([...newset, { id, name, brand, image, prices, attribute1, attribute2, attribute3, attributes, amount }]) })
     }
   }
   active = index => {

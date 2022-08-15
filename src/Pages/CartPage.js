@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styled from 'styled-components';
 import {
     Button,
     ButtonWrapper,
@@ -16,29 +17,44 @@ import {
     Span,
     Text,
     TotalContainer,
-    TotalWrapper
+    TotalWrapper,
+    ImgContainer,
+    ImgWrapper
 } from "../Styles/CartPageStyles";
+import LeftArrow from "../Assets/interface/left-arrow.png"
+import RightArrow from "../Assets/interface/right-arrow.png"
 
 export default class CartPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            count: 0,
+            itemsInCart: JSON.parse(localStorage.getItem('ScandiwebCart')),
+            isActive: false,
         }
+    }
+    prevImage = (item) => {
+        item.imageNumber = item.imageNumber - 1
+
+    }
+    nextImage = (item) => {
+        item.imageNumber = item.imageNumber + 1
     }
     render() {
         const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
         const { updateCart, isActiveCurrency } = this.props
+
         return (
             <CartOverlayWrapper>
                 <CartOverlayContainer>
                     <Text fontSize='32px' lineHeight="40px" fontWeight="700" border=" 1px solid var(--c-text-three)" padding="0 0 55px" >CART</Text>
                     {
-                        cartItems.map((item, index) =>
-                            <Divs key={index}>
+                        cartItems.map((item) =>
+                            <Divs key={item.id}>
                                 <div>
-                                    <Text fontSize='16px' lineHeight="160%" fontWeight="700">{item.brand}</Text>
-                                    <Text fontSize='16px' lineHeight="160%" fontWeight="300">{item.name}</Text>
-                                    <Text fontSize='16px' lineHeight="160%" fontWeight="500">{item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}</Text>
+                                    <Text fontSize='30px' lineHeight="27px" fontWeight="600">{item.brand}</Text>
+                                    <Text fontSize='30px' lineHeight="27px" fontWeight="300" padding="16px 0 20px 0">{item.name}</Text>
+                                    <Text fontSize='24px' lineHeight="24px" fontWeight="700" padding="0 0 20px 0">{item.prices[isActiveCurrency].currency.symbol} {item.prices[isActiveCurrency].amount}</Text>
                                     {
                                         item.attributes.length === 0 ? (
                                             <div>
@@ -83,7 +99,7 @@ export default class CartPage extends Component {
                                                                         {
                                                                             product.id === "Color" ? (product.items.map((items, index) =>
                                                                                 <Container className="container" key={index}>
-                                                                                    <Input type="radio" name={items.id + index} value={items.id} checked={item.attribute2 === items.value} readOnly />
+                                                                                    <Input type="radio" name={items.id + index} value={items.id} checked={item.attribute2 === items.id} readOnly />
                                                                                     <CheckmarkWrapper bg={items.value}>
                                                                                         <Checkmark className="checkmark" bg={items.value}></Checkmark>
                                                                                     </CheckmarkWrapper>
@@ -135,12 +151,17 @@ export default class CartPage extends Component {
 
                                 <Divr>
                                     <Divc>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1)}>+</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.id, item.name, item.brand, item.image, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1, item.imageNumber)}>+</Span>
                                         <Span className="amount" noborder>{item.amount}</Span>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1)}>-</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.id, item.name, item.brand, item.image, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1, item.imageNumber)}>-</Span>
                                     </Divc>
 
-                                    <ProductCardImage width='200px' height='288px' src={item.image}></ProductCardImage>
+                                    <ImgWrapper>
+                                        <ProductCardImage width='200px' height='288px' src={item.image[0]}></ProductCardImage>
+                                    </ImgWrapper>
+
+
+
                                 </Divr>
                             </Divs>
                         )}

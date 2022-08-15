@@ -56,7 +56,7 @@ color:var(--c-primary);
 ::after {
 content: "";
 width: 100%;
-top:60px;
+top:58px;
 position:absolute;
 height: 1px;
 background: ${(props) => props.active ? 'var(--c-primary)' : 'none'};

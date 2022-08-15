@@ -50,20 +50,7 @@ export default class CartOverlay extends Component {
     }
     render() {
         const cartItems = JSON.parse(localStorage.getItem('ScandiwebCart'))
-
-        // if (this.props.allItems.map(item => item.name.includes(cartItems.map(items => items.name)))) {
-        //     console.log(this.props.allItems.map(item => item.prices))
-        // } else {
-        //     console.log(false)
-        // }
-
-
-        console.log(cartItems.find((x) => x.name === this.props.allItems.map(i => i.name)));
-
-
         const { removeOverlay, updateCart, isActiveCurrency, allItems } = this.props
-        //console.log(allItems.map(item => item.name.includes('Jacket')))
-        //console.log(cartItems.map(i => i));
         return (
             <CartOverlayWrapper>
                 <CartOverlayContainer>
@@ -121,7 +108,7 @@ export default class CartOverlay extends Component {
                                                                         {
                                                                             product.id === "Color" ? (product.items.map((items, index) =>
                                                                                 <Container className="container" key={index}>
-                                                                                    <Input type="radio" name={items.id} value={items.id} checked={item.attribute2 === items.value} readOnly />
+                                                                                    <Input type="radio" name={items.id} value={items.id} checked={item.attribute2 === items.id} readOnly />
                                                                                     <CheckmarkWrapper bg={items.value}>
                                                                                         <Checkmark className="checkmark" bg={items.value}></Checkmark>
                                                                                     </CheckmarkWrapper>
@@ -173,12 +160,12 @@ export default class CartOverlay extends Component {
 
                                 <Divr>
                                     <Divc>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1)}>+</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.image, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount + 1, item.imageNumber)}>+</Span>
                                         <Span className="amount" noborder>{item.amount}</Span>
-                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.gallery, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1)}>-</Span>
+                                        <Span fontSize='14px' lineHeight="16px" width="24px" height="24px" onClick={() => updateCart(item.name, item.brand, item.image, item.prices, item.attribute1, item.attribute2, item.attribute3, item.attributes, item.amount - 1, item.imageNumber)}>-</Span>
                                     </Divc>
 
-                                    <ProductCardImage width='101px' height='190px' src={item.image}></ProductCardImage>
+                                    <ProductCardImage width='101px' height='190px' src={item.image[0]}></ProductCardImage>
                                 </Divr>
                             </Divs>
                         )}

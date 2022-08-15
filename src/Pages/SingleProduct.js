@@ -30,6 +30,7 @@ export class SingleProduct extends Component {
             selectedOption2: '',
             selectedOption3: '',
             amount: 1,
+            imageNumber: 0
         }
         this.handleChange = this.handleChange.bind(this);
         this.AddToCart = this.AddToCart.bind(this);
@@ -70,6 +71,7 @@ export class SingleProduct extends Component {
         const product = Items.products.find((x) => x.id === this.props.params.productname)
 
 
+        let today = new Date()
         return (
             <>
                 <SingleProductContainer>
@@ -191,7 +193,7 @@ export class SingleProduct extends Component {
 
                         {
                             product.inStock === false ? (<AddToCartBtn disabled opacity="0.5" >Add to Cart</AddToCartBtn>) :
-                                (<AddToCartBtn cursor onClick={() => this.props.updateCart(product.name, product.brand, product.gallery[0], product.prices, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3, product.attributes, this.state.amount)}>Add to Cart</AddToCartBtn>)
+                                (<AddToCartBtn cursor onClick={() => this.props.updateCart(today.getTime(), product.name, product.brand, product.gallery, product.prices, this.state.selectedOption1, this.state.selectedOption2, this.state.selectedOption3, product.attributes, this.state.amount, this.state.imageNumber)}>Add to Cart</AddToCartBtn>)
                         }
 
                         <Text padding="56px 0 0 0" fontSize='16px' lineHeight="160%" fontWeight="400" dangerouslySetInnerHTML={{ __html: product.description }} />
