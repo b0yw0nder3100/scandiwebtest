@@ -94,7 +94,7 @@ class App extends Component {
 
 
 
-    fetch('http://localhost:4000/', {
+    fetch('https://tochi-cors-anywhere.herokuapp.com/https://mockstore-endpoint.herokuapp.com/', {
       method: 'POST',
       body: JSON.stringify({
         query: `{
