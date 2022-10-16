@@ -175,7 +175,7 @@ class App extends Component {
           this.state.cartOverlay &&
           <CartOverlay allItems={this.state.allItems} removeOverlay={this.removeOverlay} updateCart={this.updateCart} isActiveCurrency={this.state.isActiveCurrency} />
         }
-        <Routes basename={'/category'}>
+        <Routes>
           <Route path='/'
             element={<Products
               allItems={this.state.allItems}
